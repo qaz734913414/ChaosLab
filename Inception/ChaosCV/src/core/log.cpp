@@ -14,9 +14,22 @@ namespace chaos
 	static std::string log_name = "";
 	static int log_level = 0;
 	static std::mutex mtx;
-	static std::map<LogSeverity, unsigned short> colors = { {INFO, 0x07}, {WARNING, 0x0E}, {ERROR, 0x04}, {FATAL, 0x04} };
 
-	auto ToString = [](LogSeverity se)->std::string {
+	auto ToColor = [](LogSeverity se)->const unsigned short {
+		switch (se)
+		{
+		case INFO:
+			return 0x07;
+		case WARNING:
+			return 0x0E;
+		case ERROR:
+		case FATAL:
+		default:
+			return 0x04;
+		}
+	};
+
+	auto ToString = [](LogSeverity se)->const std::string {
 		switch (se)
 		{
 		case INFO:
@@ -75,7 +88,8 @@ namespace chaos
 		{
 			std::string message = message_data.str();
 
-			SetConsoleTextColor(colors[severity]);
+			auto color = ToColor(severity);
+			SetConsoleTextColor(color);
 			std::cout << message << std::endl;
 			SetConsoleTextColor(0x07);
 

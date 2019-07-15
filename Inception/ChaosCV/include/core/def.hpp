@@ -24,12 +24,11 @@ namespace chaos
 
 } // namespace chaos
 
-
 using namespace chaos;
 
 #define LOG(severity) LogMessage(__FILE__, __LINE__, severity).Stream()
 
-#define DO_NOT_IMPLEMENT LOG(FATAL) << "DO NOT IMPLEMENT"
+#define DO_NOT_IMPLEMENTED LOG(FATAL) << "DO NOT IMPLEMENT"
 
 #define CHECK(condition) condition ? (void)0 :			\
   LogMessageVoidify() & LOG(chaos::FATAL) <<			\
