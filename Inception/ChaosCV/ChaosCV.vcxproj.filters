@@ -19,6 +19,12 @@
     <Filter Include="Source Files\core">
       <UniqueIdentifier>{147ed6ca-5d27-4357-9174-b372187ed09a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\dnn">
+      <UniqueIdentifier>{3b58e7df-4f56-4982-8eb2-ab44a6b7a3a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dnn">
+      <UniqueIdentifier>{71a92abe-b985-4a13-9d5e-f24dfe42cd2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\chaoscv.hpp">
@@ -39,6 +45,9 @@
     <ClInclude Include="include\core\allocator.hpp">
       <Filter>Header Files\core</Filter>
     </ClInclude>
+    <ClInclude Include="include\dnn\tensor.hpp">
+      <Filter>Header Files\dnn</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\core.cpp">
@@ -55,6 +64,9 @@
     </ClCompile>
     <ClCompile Include="src\core\allocator.cpp">
       <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dnn\tensor.cpp">
+      <Filter>Source Files\dnn</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

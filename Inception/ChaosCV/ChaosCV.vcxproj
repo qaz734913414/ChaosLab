@@ -156,6 +156,7 @@
     <ClInclude Include="include\core\def.hpp" />
     <ClInclude Include="include\core\flags.hpp" />
     <ClInclude Include="include\core\log.hpp" />
+    <ClInclude Include="include\dnn\tensor.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\allocator.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="src\core\file.cpp" />
     <ClCompile Include="src\core\flags.cpp" />
     <ClCompile Include="src\core\log.cpp" />
+    <ClCompile Include="src\dnn\tensor.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
