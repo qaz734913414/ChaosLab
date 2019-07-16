@@ -6,8 +6,69 @@
 
 #include <opencv2/opencv.hpp>
 
+#include <any>
+#include <memory>
+
 namespace chaos
 {
+	template<class Type>
+	using Ptr = std::shared_ptr<Type>;
+
+	using uchar = unsigned char;
+	using uint = unsigned int;
+
+	using Mat = cv::Mat;
+	using Point = cv::Point2f;
+	using Size = cv::Size2f;
+	using Rect = cv::Rect2f;
+	// cv::Range do not support float
+	using Range = cv::Vec2f; // <min, max>
+
+	/// <summary>Base class for those which need indefinite parameters</summary>
+	class CHAOS_API IndefiniteParameter
+	{
+	public:
+		/// <summary>To set args</summary>
+		template<class ... Args>
+		void Set(const Args& ... args)
+		{
+			DummyWrap(Unpack(args)...);
+		}
+
+	protected:
+		virtual void Parse(const std::any& any) {}
+
+		template <class ... Args>
+		void DummyWrap(const Args& ... args) {}
+
+		template <class Arg>
+		Arg& Unpack(Arg& arg)
+		{
+			std::any any = arg;
+			Parse(any);
+			return arg;
+		}
+
+		std::any arg_value;
+	};
+
+	class CHAOS_API ProgressBar
+	{
+	public:
+		static void Render(const std::string& message, size_t total = 0, int len = 20);
+		static void Update(int step = 1);
+		static void Halt();
+
+	private:
+		static void Refresh(const std::string& message, size_t total, const int len);
+
+		static bool running;
+		static bool stopped;
+		static char* progress;
+		static size_t current;
+		static std::mutex mtx;
+		static std::condition_variable halted;
+	};
 
 	class CHAOS_API File
 	{
@@ -32,7 +93,9 @@ namespace chaos
 		std::string name;
 		std::string type;
 	};
+	using FileList = std::vector<File>;
 
+	CHAOS_API void GetFileList(const std::string& folder, FileList& list, const std::string& types = "*");
 
 	CHAOS_API std::vector<std::string> Split(const std::string& data, const std::string& delimiter);
 
