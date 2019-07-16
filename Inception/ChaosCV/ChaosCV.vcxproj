@@ -151,12 +151,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\chaoscv.hpp" />
+    <ClInclude Include="include\core\allocator.hpp" />
     <ClInclude Include="include\core\core.hpp" />
     <ClInclude Include="include\core\def.hpp" />
     <ClInclude Include="include\core\flags.hpp" />
     <ClInclude Include="include\core\log.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\allocator.cpp" />
     <ClCompile Include="src\core\core.cpp" />
     <ClCompile Include="src\core\file.cpp" />
     <ClCompile Include="src\core\flags.cpp" />
