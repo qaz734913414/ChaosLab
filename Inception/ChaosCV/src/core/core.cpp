@@ -122,7 +122,16 @@ namespace chaos
 				std::sregex_token_iterator()
 		};
 	}
-	
+	std::string Shrink(const std::string& data)
+	{
+		std::string shrinked;
+		for (auto c : data)
+		{
+			if (c != ' ' && c != 10) shrinked.push_back(c);
+		}
+		return shrinked;
+	}
+
 } // namespace chaos
 
 #include <Windows.h>

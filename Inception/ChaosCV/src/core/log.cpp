@@ -49,14 +49,13 @@ namespace chaos
 	{
 		File _file(file);
 
-		//// Get stamp
+		// Get stamp
 		time_t time_stamp = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 		tm time;
 		localtime_s(&time, &time_stamp);
 
 		if (severity >= log_level)
 		{
-			;
 			message_data << "[" << ToString(severity)
 				<< cv::format(" %04d-%02d-%02d %02d:%02d:%02d ", time.tm_year + 1990, time.tm_mon + 1, time.tm_mday, time.tm_hour, time.tm_min, time.tm_sec)
 				<< _file.Name << "." << _file.Type << ":" << line << "] ";
@@ -67,7 +66,6 @@ namespace chaos
 	LogMessage::~LogMessage()
 	{
 		Flush();
-
 		// if FATAL, then abort
 		if (severity == FATAL) abort();
 	}

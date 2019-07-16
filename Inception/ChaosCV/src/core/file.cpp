@@ -30,9 +30,9 @@ namespace chaos
 		type = 0 == ppos ? "" : file.substr(ppos);
 
 		// if the first char is '.', the name will be empty
-		//CHECK(!name.empty());
+		CHECK(!name.empty());
 		auto valid = std::regex_match(name, std::regex("[^\\|\\\\/:\\*\\?\"<>]+"));
-		//CHECK(valid) << "File name can not contain |\\/:*?\"<>";
+		CHECK(valid) << "File name can not contain |\\/:*?\"<>";
 	}
 	File::File(const std::string& _path, const std::string& _name, const std::string& _type) : path(_path), name(_name), type(_type)
 	{
@@ -44,9 +44,9 @@ namespace chaos
 		if (path.back() != '\\')
 			path.append("\\");
 
-		//CHECK(!name.empty());
+		CHECK(!name.empty());
 		auto valid = std::regex_match(name, std::regex("[^\\|\\\\/:\\*\\?\"<>]+"));
-		//CHECK(valid) << "File name can not contain |\\/:*?\"<>";
+		CHECK(valid) << "File name can not contain |\\/:*?\"<>";
 	}
 
 	File::operator std::string() const
@@ -73,7 +73,7 @@ namespace chaos
 	}
 
 
-	void GetFileList(const std::string& folder, FileList& list, const std::string& types)
+	void GetFileList(const std::string& folder, FileList& list, const std::string& types, const PBCallback& update)
 	{
 		HANDLE handle;
 		WIN32_FIND_DATA find_data;
@@ -95,7 +95,7 @@ namespace chaos
 				}
 				else if (find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 				{
-					GetFileList(root + find_data.cFileName, list, types);
+					GetFileList(root + find_data.cFileName, list, types, update);
 				}
 				else
 				{
@@ -106,6 +106,7 @@ namespace chaos
 					if ("*" == types || std::find(type_list.begin(), type_list.end(), type) != type_list.end())
 					{
 						list.push_back(root + file_name);
+						if (update) update(1);
 					}
 				}
 			} while (FindNextFile(handle, &find_data));

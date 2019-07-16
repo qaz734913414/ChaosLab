@@ -95,10 +95,13 @@ namespace chaos
 	};
 	using FileList = std::vector<File>;
 
-	CHAOS_API void GetFileList(const std::string& folder, FileList& list, const std::string& types = "*");
+	typedef void(*PBCallback)(int);
+	CHAOS_API void GetFileList(const std::string& folder, FileList& list, const std::string& types = "*", const PBCallback& update = nullptr);
 
+	/// <summary>Split the string data by delimiter</summary>
 	CHAOS_API std::vector<std::string> Split(const std::string& data, const std::string& delimiter);
-
+	/// <summary>Remove all space and line break</summary>
+	CHAOS_API std::string Shrink(const std::string& data);
 
 	void SetConsoleTextColor(unsigned short color);
 
