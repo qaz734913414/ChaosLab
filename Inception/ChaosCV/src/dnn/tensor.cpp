@@ -99,8 +99,39 @@ namespace chaos
 			if (aligned) cstep = AlignSize(cstep * depth, MALLOC_ALIGN) / depth;
 		}
 
+		Tensor::Tensor(const Tensor& t) 
+			: data(t.data), ref_cnt(t.ref_cnt), aligned(t.aligned), shape(t.shape), dims(t.dims), depth(t.depth), cstep(t.cstep), allocator(t.allocator)
+		{
+			if (ref_cnt)
+				CHAOS_XADD(ref_cnt, 1);
+		}
 
+		Tensor::~Tensor()
+		{
+			Release();
+		}
 
+		Tensor& Tensor::operator=(const Tensor& t)
+		{
+			if (this == &t)
+				return *this;
+
+			if (t.ref_cnt)
+				CHAOS_XADD(t.ref_cnt, 1);
+
+			Release();
+
+			data = t.data;
+			ref_cnt = t.ref_cnt;
+			aligned = t.aligned;
+			shape = t.shape;
+			dims = t.dims;
+			depth = t.depth;
+			cstep = t.cstep;
+			allocator = t.allocator;
+
+			return *this;
+		}
 
 		Tensor Tensor::Unroll(const std::vector<Mat>& vdata, bool rechannel, bool aligned, Allocator* allocator)
 		{
@@ -143,7 +174,7 @@ namespace chaos
 				for (int i = 0; i < shape[1]; i++)
 				{
 					int idx = std::abs(c - i);
-					slice[idx] = cv::Mat(shape[2], shape[3], Cast(depth), (uchar*)data + ((size_t)shape[1] * n + i) * cstep * sizeof(float));
+					slice[idx] = cv::Mat(shape[2], shape[3], Cast(depth), (uchar*)data + ((size_t)shape[1] * n + i) * cstep * depth);
 				}
 				cv::merge(slice, packed);
 
@@ -208,6 +239,29 @@ namespace chaos
 		}
 
 
+		Tensor Tensor::Reshape(const Shape& new_shape)
+		{
+			size_t new_size = 1;
+			for (auto n : new_shape)
+			{
+				new_size *= n;
+			}
+			CHECK_EQ(Size(), new_size) << "Must keep the number of elements same.";
+
+			Tensor new_tensor = Tensor(new_shape, depth, aligned, allocator);
+
+			if (!aligned)
+			{
+				memcpy(new_tensor.data, data, Size() * depth);
+			}
+			else
+			{
+				LOG(FATAL) << "Now can not reshape the matrix which is aligned.";
+			}
+
+			return new_tensor;
+		}
+
 		size_t Tensor::Total() const
 		{
 			size_t total = cstep;
@@ -219,15 +273,40 @@ namespace chaos
 		{
 			size_t size = 1;
 			for (auto val : shape) size *= val;
-
 			return size;
 		}
 
 		bool Tensor::IsContinue() const
 		{
 			if (dims < 3) return true;
-
 			return cstep == (size_t)shape[dims - 1LL] * shape[dims - 2LL];
+		}
+
+		inline std::ostream& operator<<(std::ostream& stream, const Tensor& tensor)
+		{
+			if (tensor.dims == 1)
+			{
+				stream << Mat(1, tensor.shape[0], Cast(tensor.depth), tensor.data) << std::endl;
+			}
+			else
+			{
+				int num = 1;
+				for (int i = 0; i < tensor.dims - 2; i++)
+				{
+					num *= tensor.shape[i];
+				}
+
+				int h = tensor.shape[tensor.dims - 2LL];
+				int w = tensor.shape[tensor.dims - 1LL];
+				char* slice = (char*)tensor.data;
+				for (int i = 0; i < num - 1; i++)
+				{
+					stream << Mat(h, w, Cast(tensor.depth), slice) << std::endl;
+					slice += tensor.cstep * tensor.depth;
+				}
+				stream << Mat(h, w, Cast(tensor.depth), slice);
+			}
+			return stream;
 		}
 	}
 }
