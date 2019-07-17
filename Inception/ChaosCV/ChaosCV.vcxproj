@@ -160,6 +160,8 @@
     <ClInclude Include="include\dnn\net.hpp" />
     <ClInclude Include="include\dnn\reg.hpp" />
     <ClInclude Include="include\dnn\tensor.hpp" />
+    <ClInclude Include="include\utils\json.hpp" />
+    <ClInclude Include="include\utils\numpy.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\allocator.cpp" />
@@ -171,6 +173,8 @@
     <ClCompile Include="src\dnn\net.cpp" />
     <ClCompile Include="src\dnn\reg.cpp" />
     <ClCompile Include="src\dnn\tensor.cpp" />
+    <ClCompile Include="src\utils\json.cpp" />
+    <ClCompile Include="src\utils\numpy.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
