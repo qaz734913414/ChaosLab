@@ -46,12 +46,12 @@ namespace chaos
 		int Shape::operator[](size_t idx) const { return shape[idx]; }
 		inline std::ostream& operator<<(std::ostream& stream, const Shape& shape)
 		{
-			stream << "[";
+			stream << "(";
 			for (int i = 0; i < shape.Size() - 1; i++)
 			{
 				stream << shape[i] << ", ";
 			}
-			stream << shape[shape.Size() - 1] << "]";
+			stream << shape[shape.Size() - 1] << ")";
 			return stream;
 		}
 
@@ -256,8 +256,8 @@ namespace chaos
 			}
 			else
 			{
-				// Reshape to a vector first
-				Tensor flatten = Tensor(shape, depth, false, allocator);
+				// Flatten
+				Tensor flatten = Tensor(shape, depth, /*aligned=*/false, allocator);
 				
 				auto num = Total() / cstep;
 				for (int n = 0; n < num; n++)
@@ -267,7 +267,7 @@ namespace chaos
 					memcpy(dst, src, flatten.cstep * flatten.depth);
 				}
 
-				// Then copy each chennel
+				// Copy to new shape
 				auto new_num = new_tensor.Total() / new_tensor.cstep;
 				auto csize = new_tensor.Size() / new_num;
 				for (int n = 0; n < new_num; n++)
@@ -318,13 +318,14 @@ namespace chaos
 				int h = tensor.shape[tensor.dims - 2LL];
 				int w = tensor.shape[tensor.dims - 1LL];
 				char* slice = (char*)tensor.data;
-				for (int i = 0; i < num - 1; i++)
+				for (int i = 0; i < num; i++)
 				{
 					stream << Mat(h, w, Cast(tensor.depth), slice) << std::endl;
 					slice += tensor.cstep * tensor.depth;
 				}
-				stream << Mat(h, w, Cast(tensor.depth), slice);
+				//stream << Mat(h, w, Cast(tensor.depth), slice);
 			}
+			stream << "<Tensor " << tensor.shape << ">";
 			return stream;
 		}
 	}
