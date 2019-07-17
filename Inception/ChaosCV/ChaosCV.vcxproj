@@ -158,6 +158,7 @@
     <ClInclude Include="include\core\log.hpp" />
     <ClInclude Include="include\dnn\layers\data_layer.hpp" />
     <ClInclude Include="include\dnn\net.hpp" />
+    <ClInclude Include="include\dnn\reg.hpp" />
     <ClInclude Include="include\dnn\tensor.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +169,7 @@
     <ClCompile Include="src\core\log.cpp" />
     <ClCompile Include="src\dnn\layers\data_layer.cpp" />
     <ClCompile Include="src\dnn\net.cpp" />
+    <ClCompile Include="src\dnn\reg.cpp" />
     <ClCompile Include="src\dnn\tensor.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

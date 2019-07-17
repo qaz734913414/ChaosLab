@@ -1,4 +1,5 @@
 #include "dnn/net.hpp"
+#include "dnn/reg.hpp"
 
 #pragma warning (push, 0)
 #include <mxnet/c_api.h>
@@ -99,21 +100,21 @@ namespace chaos
 				CHECK_EQ(0, MXPredGetOutput(predictor, output_idx[name], (float*)data.data, (mx_uint)data.Size())) << MXGetLastError();
 			}
 
-			virtual void Reshape(const std::vector<DataLayer>& inputs) final
+			virtual void Reshape(const std::vector<DataLayer>& new_inputs) final
 			{
-				for (auto layer : inputs)
+				for (auto layer : new_inputs)
 				{
 					CHECK_NE(shapes.end(), shapes.find(layer.name));
 					shapes[layer.name] = layer.shape;
 				}
 
-				int size = (int)inputs.size();
+				int size = (int)new_inputs.size();
 
 				std::vector<const char*> input_keys;
 				std::vector<mx_uint> indptr;
 				std::vector<mx_uint> shape_data;
 
-				GetInputsInfo(inputs, input_keys, indptr, shape_data);
+				GetInputsInfo(new_inputs, input_keys, indptr, shape_data);
 
 				PredictorHandle new_predictor;
 				CHECK_EQ(0, MXPredReshape(size, input_keys.data(),
@@ -123,16 +124,16 @@ namespace chaos
 				predictor = new_predictor;
 			}
 
-			//virtual dnn::Framework& GetFramework() final
-			//{
-			//	return Registered::Have("MxNet");
-			//}
+			virtual dnn::Framework& GetFramework() final
+			{
+				return Registered::Have("MxNet");
+			}
 
 		private:
 			void LoadWeight(const std::string& file)
 			{
 				std::fstream fs(file, std::ios::in | std::ios::binary);
-				CHECK(fs.good());
+				CHECK(fs.good()) << "Can not load weight file.";
 
 				fs.seekg(0, std::ios::end);
 				size_t size = fs.tellg();
@@ -143,16 +144,6 @@ namespace chaos
 				fs.read((char*)weight.data(), size);
 				fs.close();
 			}
-
-			// 要取中间层，可能只能用Internals
-			//SymbolHandle inter;
-			//MXSymbolGetInternals(handle, &inter);
-			//const char** outs;
-			//MXSymbolListOutputs(inter, &num, &outs);
-			//for (int i = 0; i < num; i++)
-			//{
-			//	std::cout << outs[i] << std::endl;
-			//}
 
 			void LoadSymbol(const std::string& file)
 			{

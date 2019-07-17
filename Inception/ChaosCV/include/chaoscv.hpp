@@ -4,3 +4,4 @@
 
 #include "dnn/tensor.hpp"
 #include "dnn/net.hpp"
+#include "dnn/reg.hpp"
