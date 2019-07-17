@@ -256,7 +256,26 @@ namespace chaos
 			}
 			else
 			{
-				LOG(FATAL) << "Now can not reshape the matrix which is aligned.";
+				// Reshape to a vector first
+				Tensor flatten = Tensor(shape, depth, false, allocator);
+				
+				auto num = Total() / cstep;
+				for (int n = 0; n < num; n++)
+				{
+					const void* src = (unsigned char*)data + n * cstep * depth;
+					void* dst = (unsigned char*)flatten.data + n * flatten.cstep * flatten.depth;
+					memcpy(dst, src, flatten.cstep * flatten.depth);
+				}
+
+				// Then copy each chennel
+				auto new_num = new_tensor.Total() / new_tensor.cstep;
+				auto csize = new_tensor.Size() / new_num;
+				for (int n = 0; n < new_num; n++)
+				{
+					const void* src = (unsigned char*)flatten.data + n * csize * flatten.depth;
+					void* dst = (unsigned char*)new_tensor.data + n * new_tensor.cstep * new_tensor.depth;
+					memcpy(dst, src, csize * new_tensor.depth);
+				}
 			}
 
 			return new_tensor;
