@@ -25,6 +25,12 @@
     <Filter Include="Source Files\dnn">
       <UniqueIdentifier>{71a92abe-b985-4a13-9d5e-f24dfe42cd2f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\dnn\layers">
+      <UniqueIdentifier>{73e493e7-fe0b-4673-8d88-051c5cb05b39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dnn\layers">
+      <UniqueIdentifier>{c0e5764b-9e78-4d8a-8a6b-c6fa0ab32d27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\chaoscv.hpp">
@@ -48,6 +54,12 @@
     <ClInclude Include="include\dnn\tensor.hpp">
       <Filter>Header Files\dnn</Filter>
     </ClInclude>
+    <ClInclude Include="include\dnn\net.hpp">
+      <Filter>Header Files\dnn</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dnn\layers\data_layer.hpp">
+      <Filter>Header Files\dnn\layers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\core.cpp">
@@ -67,6 +79,12 @@
     </ClCompile>
     <ClCompile Include="src\dnn\tensor.cpp">
       <Filter>Source Files\dnn</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dnn\net.cpp">
+      <Filter>Source Files\dnn</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dnn\layers\data_layer.cpp">
+      <Filter>Source Files\dnn\layers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

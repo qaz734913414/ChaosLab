@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <Toolkits>$(SolutionDir)Common\Toolkits\</Toolkits>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IncludePath Condition="'$(PlatformTarget)'=='x64'">$(Toolkits)MxNet\1.4.0\include;$(Toolkits)OpenCV\4.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(PlatformTarget)'=='x64'">$(Toolkits)MxNet\1.4.0\lib;$(Toolkits)OpenCV\4.1\x64\vc16\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies Condition="'$(Configuration)|$(PlatformTarget)'=='Debug|x64'">ChaosCV.lib;libmxnet.lib;opencv_world410d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(PlatformTarget)'=='Release|x64'">ChaosCV.lib;libmxnet.lib;opencv_world410.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)Inception\ChaosCV\include</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4251;4307</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="Toolkits">
+      <Value>$(Toolkits)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
