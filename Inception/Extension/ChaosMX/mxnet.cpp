@@ -1,5 +1,6 @@
 #include "dnn/net.hpp"
 #include "dnn/reg.hpp"
+#include "dnn/optimizer.hpp"
 
 #pragma warning (push, 0)
 #include <mxnet/c_api.h>
@@ -44,12 +45,12 @@ namespace chaos
 				}
 			}
 
-			virtual ~MxNet()
+			~MxNet()
 			{
 				CHECK_EQ(0, MXPredFree(predictor)) << MXGetLastError();
 			}
 
-			virtual void BindExecutor(const std::vector<DataLayer>& inputs) final
+			void BindExecutor(const std::vector<DataLayer>& inputs) final
 			{
 				for (auto layer : inputs)
 				{
@@ -70,19 +71,19 @@ namespace chaos
 			}
 
 			/// <summary>Forward the newtork</summary>
-			virtual void Forward() final
+			void Forward() final
 			{
 				CHECK_EQ(0, MXPredForward(predictor)) << MXGetLastError();
 			}
 
-			virtual void SetLayerData(const std::string& name, const Tensor& data) final
+			void SetLayerData(const std::string& name, const Tensor& data) final
 			{
 				CHECK_EQ(F32, data.depth);
 				CHECK_EQ(shapes[name], data.shape);
 
 				CHECK_EQ(0, MXPredSetInput(predictor, name.data(), (const float*)data.data, (mx_uint)data.Size())) << MXGetLastError();
 			}
-			virtual void GetLayerData(const std::string& name, Tensor& data) final
+			void GetLayerData(const std::string& name, Tensor& data) final
 			{
 				CHECK(output_idx.find(name) != output_idx.end());
 
@@ -100,7 +101,7 @@ namespace chaos
 				CHECK_EQ(0, MXPredGetOutput(predictor, output_idx[name], (float*)data.data, (mx_uint)data.Size())) << MXGetLastError();
 			}
 
-			virtual void Reshape(const std::vector<DataLayer>& new_inputs) final
+			void Reshape(const std::vector<DataLayer>& new_inputs) final
 			{
 				for (auto layer : new_inputs)
 				{
@@ -124,7 +125,7 @@ namespace chaos
 				predictor = new_predictor;
 			}
 
-			virtual dnn::Framework& GetFramework() final
+			dnn::Framework& GetFramework() final
 			{
 				return Registered::Have("MxNet");
 			}
@@ -200,7 +201,6 @@ namespace chaos
 				}
 			}
 
-
 			std::string weight;
 			std::string symbol;
 
@@ -218,5 +218,7 @@ namespace chaos
 		{
 			return Ptr<Net>(new MxNet(model, ctx));
 		}
+
+
 	}
 }

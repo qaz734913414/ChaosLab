@@ -11,8 +11,8 @@ namespace chaos
 		/// <summary>The json string must be shrinked</summary>
 		Json(const std::string& json);
 
-		Json operator[](const std::string& key);
-		Json operator[](const int idx);
+		Json operator[](const std::string& key) const;
+		Json operator[](const size_t idx) const;
 
 		std::map<std::string, std::string> GetData() const;
 		__declspec(property(get = GetData)) std::map<std::string, std::string> Data;

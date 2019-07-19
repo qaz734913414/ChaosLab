@@ -75,6 +75,9 @@
     <ClInclude Include="include\utils\json.hpp">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
+    <ClInclude Include="include\dnn\optimizer.hpp">
+      <Filter>Header Files\dnn</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\core.cpp">

@@ -85,13 +85,17 @@ namespace chaos
 		}
 	}
 
-	Json Json::operator[](const std::string& key)
+	Json Json::operator[](const std::string& key) const
 	{
-		return data[key];
+		auto it = data.find(key);
+		return it != data.end() ? it->second : ""; //data.find(key)->second;
+		//return data[key];
 	}
-	Json Json::operator[](const int idx)
+	Json Json::operator[](const size_t idx) const
 	{
-		return data[std::to_string(idx)];
+		auto it = data.find(std::to_string(idx));
+		return it != data.end() ? it->second : ""; // data.find(std::to_string(idx))->second;
+		//return data[std::to_string(idx)];
 	}
 	std::map<std::string, std::string> Json::GetData() const
 	{

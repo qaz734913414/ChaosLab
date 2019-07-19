@@ -151,6 +151,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="mxnet.cpp" />
+    <ClCompile Include="optimizer.cpp" />
+    <ClCompile Include="symbol.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="symbol.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

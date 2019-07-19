@@ -65,7 +65,7 @@ namespace chaos
 			virtual dnn::Framework& GetFramework() = 0;
 			__declspec(property(get = GetFramework)) dnn::Framework& Framework;
 
-			static Ptr<Net> Load(const Model& model, const Context& ctx = Context());
+			static Ptr<Net> Load(const dnn::Model& model, const Context& ctx = Context());
 		};
 
 		CHAOS_API Ptr<Net> LoadMxNet(const Model& model, const Context& ctx = Context());

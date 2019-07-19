@@ -158,6 +158,7 @@
     <ClInclude Include="include\core\log.hpp" />
     <ClInclude Include="include\dnn\layers\data_layer.hpp" />
     <ClInclude Include="include\dnn\net.hpp" />
+    <ClInclude Include="include\dnn\optimizer.hpp" />
     <ClInclude Include="include\dnn\reg.hpp" />
     <ClInclude Include="include\dnn\tensor.hpp" />
     <ClInclude Include="include\utils\json.hpp" />
