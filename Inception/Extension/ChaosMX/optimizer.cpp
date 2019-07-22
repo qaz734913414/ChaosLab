@@ -149,7 +149,7 @@ namespace chaos
 					NDArrayHandle handle;
 
 					std::vector<mx_uint> shape = w.second.shape;
-					CHECK_EQ(0, MXNDArrayCreate(shape.data(), shape.size(), 1, 0, false, &handle)) << MXGetLastError();
+					CHECK_EQ(0, MXNDArrayCreate(shape.data(), (mx_uint)shape.size(), 1, 0, false, &handle)) << MXGetLastError();
 
 					void* pdata = nullptr;
 					CHECK_EQ(0, MXNDArrayGetData(handle, &pdata)) << MXGetLastError();
@@ -160,7 +160,7 @@ namespace chaos
 					keys.push_back(w.first.c_str());
 				}
 
-				CHECK_EQ(0, MXNDArraySave(file.c_str(), handles.size(), handles.data(), keys.data())) << MXGetLastError();
+				CHECK_EQ(0, MXNDArraySave(file.c_str(), (mx_uint)handles.size(), handles.data(), keys.data())) << MXGetLastError();
 
 				// Release
 				for (auto& h : handles)
