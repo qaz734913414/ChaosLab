@@ -165,6 +165,8 @@
     <ClInclude Include="include\face\aligner.hpp" />
     <ClInclude Include="include\face\detector.hpp" />
     <ClInclude Include="include\face\face_info.hpp" />
+    <ClInclude Include="include\highgui\highgui.hpp" />
+    <ClInclude Include="include\highgui\plot.hpp" />
     <ClInclude Include="include\utils\json.hpp" />
     <ClInclude Include="include\utils\numpy.hpp" />
     <ClInclude Include="include\utils\utils.hpp" />
@@ -182,6 +184,8 @@
     <ClCompile Include="src\dnn\tensor.cpp" />
     <ClCompile Include="src\face\face_info.cpp" />
     <ClCompile Include="src\face\l5_aligner.cpp" />
+    <ClCompile Include="src\highgui\highgui.cpp" />
+    <ClCompile Include="src\highgui\plot.cpp" />
     <ClCompile Include="src\utils\json.cpp" />
     <ClCompile Include="src\utils\numpy.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />
