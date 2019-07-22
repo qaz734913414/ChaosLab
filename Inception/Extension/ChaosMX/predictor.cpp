@@ -12,10 +12,10 @@ namespace chaos
 {
 	namespace dnn
 	{
-		class MxNet : public Net
+		class Predictor : public Net
 		{
 		public:
-			MxNet(const Model& model, const Context& ctx)
+			Predictor(const Model& model, const Context& ctx)
 			{
 				switch (ctx.type)
 				{
@@ -45,7 +45,7 @@ namespace chaos
 				}
 			}
 
-			~MxNet()
+			~Predictor()
 			{
 				CHECK_EQ(0, MXPredFree(predictor)) << MXGetLastError();
 			}
@@ -216,7 +216,7 @@ namespace chaos
 
 		Ptr<Net> LoadMxNet(const Model& model, const Context& ctx)
 		{
-			return Ptr<Net>(new MxNet(model, ctx));
+			return Ptr<Net>(new Predictor(model, ctx));
 		}
 
 

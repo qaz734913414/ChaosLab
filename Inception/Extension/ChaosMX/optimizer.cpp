@@ -1,9 +1,5 @@
-#include "dnn/optimizer.hpp"
+#include "base.hpp"
 #include "symbol.hpp"
-
-#pragma warning (push, 0)
-#include <mxnet/c_api.h>
-#pragma warning (pop)
 
 #include <stack>
 
@@ -16,41 +12,11 @@ namespace chaos
 		public:
 			MxOp(const Model& model)
 			{
-				mx_uint num_symbol_creators = 0;
-				AtomicSymbolCreator* creators = nullptr;
-				CHECK_EQ(0, MXSymbolListAtomicSymbolCreators(&num_symbol_creators, &creators)) << MXGetLastError();
-				for (mx_uint i = 0; i < num_symbol_creators; i++)
-				{
-					const char* name;
-					const char* description;
-					mx_uint num_args;
-					const char** arg_names;
-					const char** arg_type_infos;
-					const char** arg_descriptions;
-					const char* key_var_num_args;
-					CHECK_EQ(0, MXSymbolGetAtomicSymbolInfo(creators[i], &name, &description,
-						&num_args, &arg_names, &arg_type_infos,
-						&arg_descriptions, &key_var_num_args)) << MXGetLastError();
-					symbol_creators[name] = creators[i];
-
-					for (mx_uint i = 0; i < num_args; i++)
-					{
-						symbol_args[name].push_back(arg_names[i]);
-					}
-				}
-
 				CHECK(model.from_file) << "Just support to load from file";
 
 				LoadSymbol(model.symbol);
 				LoadWeight(model.weight);
 
-				//AtomicSymbolHandle atomic;
-				//SymbolHandle handle;
-				//CHECK_EQ(0, MXSymbolCreateVariable("data", &handle)) << MXGetLastError();
-				//SymbolHandle h2;
-				//MXSymbolCreateAtomicSymbol(symbol_creators["Convolution"], 0, nullptr, nullptr, &h2);
-				//MXSymbolCompose(handle, "conv1", 0, nullptr, &h2);
-				//CHECK_EQ(0, MXSymbolSaveToFile(handle, "test.json")) << MXGetLastError();
 			}
 
 			~MxOp()
@@ -60,7 +26,8 @@ namespace chaos
 
 			void Export(const std::string& name) final
 			{
-
+				SaveSymbol(name + ".json");
+				SaveWeight(name + ".params");
 			}
 
 		private:
@@ -107,67 +74,70 @@ namespace chaos
 				fs.read((char*)json.data(), size);
 				fs.close();
 
-				symbols = Load(Shrink(json));
+				Json symbol_json = Shrink(json);
 
-				
+				auto nodes = symbol_json["nodes"];
+				size_t cnt = nodes.Data.size();
+				for (size_t i = 0; i < cnt; i++)
+				{
+					symbols.push_back(nodes[i]);
+				}
+			}
 
-				// To Save another Symbol
+			void SaveSymbol(const std::string& file)
+			{
 				std::vector<SymbolHandle> handles;
-				for (const auto& ss : symbols)
+				for (auto sym : symbols)
 				{
 					SymbolHandle handle;
-					if (ss.op == "null")
+
+					if (sym.op.op_name == "null")
 					{
-						CHECK_EQ(0, MXSymbolCreateVariable(ss.name.c_str(), &handle)) << MXGetLastError();
-						for (auto attr : ss.attrs)
+						CHECK_EQ(0, MXSymbolCreateVariable(sym.name.c_str(), &handle)) << MXGetLastError();
+						for (auto attr : sym.attrs)
 						{
 							CHECK_EQ(0, MXSymbolSetAttr(handle, attr.first.c_str(), attr.second.c_str())) << MXGetLastError();
 						}
 					}
 					else
 					{
-						std::vector<const char*> key;
-						std::vector<const char*> vals;
-						int i = 0;
-						for (const auto& attr : ss.attrs)
+						std::vector<const char*> config_keys;
+						std::vector<const char*> config_vals;
+						for (auto& attr : sym.attrs)
 						{
-							key.push_back(attr.first.c_str());
-							vals.push_back(attr.second.c_str());
-							i++;
+							config_keys.push_back(attr.first.data());
+							config_vals.push_back(attr.second.data());
 						}
+						CHECK_EQ(0, MXSymbolCreateAtomicSymbol(sym.op.creator, (mx_uint)sym.attrs.size(), config_keys.data(), config_vals.data(), &handle) ) << MXGetLastError();
 
-						CHECK_EQ(0, MXSymbolCreateAtomicSymbol(symbol_creators[ss.op], ss.attrs.size(), key.data(), vals.data(), &handle)) << MXGetLastError();
-					}
-
-					if (!ss.inputs.empty())
-					{
-						std::vector<SymbolHandle> inputs;
-						std::vector<const char*> keys;
-						int i = 0;
-						for (const auto& in : ss.inputs)
+						std::vector<const char*> inputs_keys;
+						std::vector<SymbolHandle> inputs_vals;
+						for (size_t i = 0; i < sym.inputs.size(); i++)
 						{
-							inputs.push_back(handles[in.node_id]);
-
-							std::string op = ss.op;
-							keys.push_back(symbol_args[op][i++].c_str());
-							//std::string key = symbols[in.node_id].name;
-							//key = key.find(ss.name) < key.size() ? key.substr(ss.name.size() + 1) : "data";
-							//keys.push_back(new char[key.size() + 1]());
-							//memcpy((char*)keys.back(), key.data(), key.size());
+							inputs_keys.push_back(sym.op.op_info.arg_names[i]);
+							inputs_vals.push_back(handles[sym.inputs[i].node_id]);
 						}
-						CHECK_EQ(0, MXSymbolCompose(handle, ss.name.c_str(), keys.size(), keys.data(), inputs.data())) << MXGetLastError();
+						CHECK_EQ(0, MXSymbolCompose(handle, sym.name.c_str(), (mx_uint)sym.inputs.size(), inputs_keys.data(), inputs_vals.data())) << MXGetLastError();
 					}
 					handles.push_back(handle);
 				}
-				MXSymbolSaveToFile(handles.back(), "test.json");
+
+				CHECK_EQ(0, MXSymbolSaveToFile(handles.back(), file.c_str())) << MXGetLastError();
+
+				// Release
+				for (auto h : handles)
+				{
+					CHECK_EQ(0, MXSymbolFree(h)) << MXGetLastError();
+				}
+			}
+
+			void SaveWeight(const std::string& file)
+			{
+
 			}
 
 			std::map<std::string, Tensor> weights;
-			//SymbolHandle symbol;
-			SymbolList symbols;
-
-			std::map<std::string, AtomicSymbolCreator> symbol_creators;
-			std::map<std::string, std::vector<std::string>> symbol_args;
+			std::vector<Symbol> symbols;
 
 		};
 

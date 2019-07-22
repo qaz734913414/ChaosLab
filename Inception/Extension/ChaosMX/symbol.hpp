@@ -1,7 +1,9 @@
 #pragma once
 
-#include "dnn/tensor.hpp"
+#include "base.hpp"
 #include "utils/json.hpp"
+
+#include "operator.hpp"
 
 namespace chaos
 {
@@ -10,7 +12,9 @@ namespace chaos
 		class CHAOS_API Inputs
 		{
 		public:
-			//Inputs();
+			Inputs();
+			Inputs(const Json& json);
+
 			int node_id;
 			int index;
 			int version;
@@ -19,17 +23,17 @@ namespace chaos
 		class CHAOS_API Symbol
 		{
 		public:
-			Symbol();
-			Symbol(Json json);
+			using Attrs = std::map<std::string, std::string>;
 
-			std::string op;
+			Symbol();
+			Symbol(const Json& json);
+
+			Operator op;
 			std::string name;
-			std::map<std::string, std::string> attrs;
+			Attrs attrs;
 			std::vector<Inputs> inputs;
 		};
 
-		using SymbolList = std::vector<Symbol>;
 
-		SymbolList Load(const Json& json);
 	}
 }

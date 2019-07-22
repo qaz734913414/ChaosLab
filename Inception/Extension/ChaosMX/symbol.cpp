@@ -4,37 +4,32 @@ namespace chaos
 {
 	namespace dnn
 	{
-		Symbol::Symbol() : op(""), name(""), attrs(std::map<std::string, std::string>()), inputs(std::vector<Inputs>()) {}
-		Symbol::Symbol(Json json) : op(json.Data["op"]), name(json.Data["name"]), attrs(json["attrs"].Data)
+		Inputs::Inputs()
 		{
-			auto nodes = json["inputs"];
-			auto cnt = nodes.Data.size();
-			for (size_t i = 0; i < cnt; i++)
-			{
-				auto node = nodes[i];
-				Inputs in;
-				in.node_id = std::atoi(node.Data["0"].c_str());
-				in.index = std::atoi(node.Data["1"].c_str());
-				in.version = std::atoi(node.Data["2"].c_str());
-
-				inputs.push_back(in);
-			}
+			node_id = 0;
+			index = 0;
+			version = 0;
+		};
+		Inputs::Inputs(const Json& json)
+		{
+			node_id = std::stoi(json.Data["0"]);
+			index = std::stoi(json.Data["1"]);
+			version = std::stoi(json.Data["2"]);
 		}
 
-		SymbolList Load(const Json& json)
+		Symbol::Symbol() : op(Operator()), name(""), attrs(Attrs()), inputs(std::vector<Inputs>()) {}
+		Symbol::Symbol(const Json& json)
 		{
-			auto nodes = json["nodes"];
+			op = Operator(json.Data["op"]);
+			name = json.Data["name"];
+			attrs = json["attrs"].Data;
 
-			size_t cnt = nodes.Data.size();
-
-			SymbolList list;
+			auto input = json["inputs"];
+			auto cnt = input.Data.size();
 			for (size_t i = 0; i < cnt; i++)
 			{
-				Symbol symbol = nodes[i];
-				list.push_back(symbol);
+				inputs.push_back(input[i]);
 			}
-
-			return list;
 		}
 	}
 }
