@@ -156,13 +156,17 @@
     <ClInclude Include="include\core\def.hpp" />
     <ClInclude Include="include\core\flags.hpp" />
     <ClInclude Include="include\core\log.hpp" />
+    <ClInclude Include="include\dnn\group.hpp" />
     <ClInclude Include="include\dnn\layers\data_layer.hpp" />
     <ClInclude Include="include\dnn\net.hpp" />
     <ClInclude Include="include\dnn\optimizer.hpp" />
     <ClInclude Include="include\dnn\reg.hpp" />
     <ClInclude Include="include\dnn\tensor.hpp" />
+    <ClInclude Include="include\face\detector.hpp" />
+    <ClInclude Include="include\face\face_info.hpp" />
     <ClInclude Include="include\utils\json.hpp" />
     <ClInclude Include="include\utils\numpy.hpp" />
+    <ClInclude Include="include\utils\utils.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\allocator.cpp" />
@@ -170,12 +174,15 @@
     <ClCompile Include="src\core\file.cpp" />
     <ClCompile Include="src\core\flags.cpp" />
     <ClCompile Include="src\core\log.cpp" />
+    <ClCompile Include="src\dnn\group.cpp" />
     <ClCompile Include="src\dnn\layers\data_layer.cpp" />
     <ClCompile Include="src\dnn\net.cpp" />
     <ClCompile Include="src\dnn\reg.cpp" />
     <ClCompile Include="src\dnn\tensor.cpp" />
+    <ClCompile Include="src\face\face_info.cpp" />
     <ClCompile Include="src\utils\json.cpp" />
     <ClCompile Include="src\utils\numpy.cpp" />
+    <ClCompile Include="src\utils\utils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

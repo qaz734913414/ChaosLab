@@ -27,6 +27,9 @@
     <ClCompile Include="operator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mtcnn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="symbol.hpp">
