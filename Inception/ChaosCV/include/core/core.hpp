@@ -21,6 +21,7 @@ namespace chaos
 	using Point = cv::Point2f;
 	using Size = cv::Size2f;
 	using Rect = cv::Rect2f;
+	using Scalar = cv::Scalar;
 	// cv::Range do not support float
 	using Range = cv::Vec2f; // <min, max>
 
@@ -74,6 +75,7 @@ namespace chaos
 	{
 	public:
 		File();
+		File(const char* file);
 		File(const std::string& file);
 		File(const std::string& path, const std::string& name, const std::string& type);
 

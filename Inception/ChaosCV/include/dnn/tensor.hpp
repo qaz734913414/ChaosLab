@@ -43,13 +43,16 @@ namespace chaos
 
 			void Swap(Shape& shape);
 			size_t Size() const;
-			int operator[](size_t idx) const;
+			const int& operator[](size_t idx) const;
+			int& operator[](size_t idx);
 
 			CHAOS_API friend inline bool operator==(const Shape& s1, const Shape& s2)
 			{
 				return s1.shape == s2.shape;
 			}
 			CHAOS_API friend inline std::ostream& operator<<(std::ostream& stream, const Shape& shape);
+
+			std::string ToString() const;
 
 			std::vector<int>::const_iterator begin() const;
 			std::vector<int>::iterator begin();
@@ -126,6 +129,7 @@ namespace chaos
 				return *((Type*)data + offset);
 			}
 
+			Tensor Flatten();
 			Tensor Reshape(const Shape& new_shape);
 
 			size_t Total() const;

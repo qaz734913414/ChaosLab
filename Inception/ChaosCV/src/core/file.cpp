@@ -8,6 +8,7 @@
 namespace chaos
 {
 	File::File() {}
+	File::File(const char* _file) : File(std::string(_file)) {}
 	File::File(const std::string& _file)
 	{
 		if (_file.empty())
