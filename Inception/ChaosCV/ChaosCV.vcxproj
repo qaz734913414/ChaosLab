@@ -162,6 +162,7 @@
     <ClInclude Include="include\dnn\optimizer.hpp" />
     <ClInclude Include="include\dnn\reg.hpp" />
     <ClInclude Include="include\dnn\tensor.hpp" />
+    <ClInclude Include="include\face\aligner.hpp" />
     <ClInclude Include="include\face\detector.hpp" />
     <ClInclude Include="include\face\face_info.hpp" />
     <ClInclude Include="include\utils\json.hpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="src\dnn\reg.cpp" />
     <ClCompile Include="src\dnn\tensor.cpp" />
     <ClCompile Include="src\face\face_info.cpp" />
+    <ClCompile Include="src\face\l5_aligner.cpp" />
     <ClCompile Include="src\utils\json.cpp" />
     <ClCompile Include="src\utils\numpy.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />

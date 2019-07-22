@@ -30,6 +30,8 @@ namespace chaos
 					.SetForward("ONet", [&]() { ONetForward(); });
 			}
 
+			~MultiTaskCNN() {}
+
 			std::vector<FaceInfo> Detect(const Mat& image) final
 			{
 				CHECK(image.rows > 12 && image.cols > 12);

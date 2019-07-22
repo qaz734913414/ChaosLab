@@ -10,6 +10,8 @@ namespace chaos
 		class CHAOS_API Detector : public IndefiniteParameter
 		{
 		public:
+			virtual ~Detector() {}
+
 			virtual std::vector<FaceInfo> Detect(const Mat& image) = 0;
 
 			/// <summary>
@@ -27,6 +29,8 @@ namespace chaos
 			/// <param name="folder">Models folder, include 3 models must be named PNet, RNet and ONet</param>
 			/// <param name="ctx">Device type and id</param>
 			static Ptr<Detector> LoadMTCNN(const std::string& folder, const dnn::Context& ctx = dnn::Context());
+
+			static Ptr<Detector> LoadSSD(const dnn::Model& model, const dnn::Context& ctx = dnn::Context());
 		};
 	}
 }
