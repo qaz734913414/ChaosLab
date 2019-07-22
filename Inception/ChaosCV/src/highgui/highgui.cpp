@@ -74,7 +74,7 @@ namespace chaos
 		return (roi.height - 1.f) - (value - y_range[0]) / (y_range[1] - y_range[0]) * (roi.height - 1.f);
 	}
 
-	void Coordinate2D::ShowTags()
+	void Coordinate2D::ShowTags(float loose)
 	{
 		// Common params for font
 		auto font_face = cv::HersheyFonts::FONT_HERSHEY_SIMPLEX;
@@ -83,6 +83,13 @@ namespace chaos
 		// If the range is very short, reset the range to 1
 		if ((double)x_range[1] - x_range[0] < 1e-8) x_range = Range(x_range[0] - 0.5f, x_range[1] + 0.5f);
 		if ((double)y_range[1] - y_range[0] < 1e-8) y_range = Range(y_range[0] - 0.5f, y_range[1] + 0.5f);
+
+		float x_loose = (x_range[1] - x_range[0]) * loose;
+		float y_loose = (y_range[1] - y_range[0]) * loose;
+		x_range[1] += x_loose;
+		x_range[0] -= x_loose;
+		y_range[1] += y_loose;
+		y_range[0] -= y_loose;
 
 		// Scale
 		double x_scale = pow(10, floor(log10(std::max(abs(x_range[1]), abs(x_range[0])))));

@@ -11,7 +11,7 @@ namespace chaos
 		PlotImpl(const std::string& name) : PlotFigure(name) {}
 		~PlotImpl() {}
 
-		virtual void Show() final
+		void Show() final
 		{
 			figure = ColorPool::Get(WHITE);
 
@@ -29,7 +29,7 @@ namespace chaos
 			cv::imshow(name, figure);
 		}
 
-		virtual Mat Draw() final
+		Mat Draw() final
 		{
 			figure = ColorPool::Get(WHITE);
 
@@ -45,7 +45,7 @@ namespace chaos
 			return figure;
 		}
 
-		virtual void Apply(const Mat& x, const Mat& y) final
+		void Apply(const Mat& x, const Mat& y) final
 		{
 			CHECK_EQ(1, x.rows);
 			CHECK_EQ(1, y.rows);

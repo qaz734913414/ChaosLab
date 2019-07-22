@@ -42,14 +42,18 @@ namespace chaos
 	};
 
 
-	// Figure State
+	/// <summary>Figure State</summary>
 	enum State
 	{
 		OFF,
 		ON,
 	};
 
-	/// <summary>Reference to OpenCV</summary>
+	/// <summary>
+	/// <para>Marker Types</para>
+	/// <para>For Plot and Scatter</para>
+	/// <para>Reference to OpenCV</para>
+	/// </summary>
 	enum MarkerTypes
 	{
 		MARKER_CROSS = 0,           //!< A crosshair marker shape
@@ -99,7 +103,7 @@ namespace chaos
 		float MappingY(float value);
 
 		/// <summary>To show the axis and labels</summary>
-		virtual void ShowTags();
+		virtual void ShowTags(float loose = 0.f);
 
 		Range x_range;
 		Range y_range;

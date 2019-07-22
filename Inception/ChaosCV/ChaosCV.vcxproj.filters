@@ -111,6 +111,9 @@
     <ClInclude Include="include\highgui\plot.hpp">
       <Filter>Header Files\highgui</Filter>
     </ClInclude>
+    <ClInclude Include="include\highgui\scatter.hpp">
+      <Filter>Header Files\highgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\core.cpp">
@@ -162,6 +165,9 @@
       <Filter>Source Files\highgui</Filter>
     </ClCompile>
     <ClCompile Include="src\highgui\plot.cpp">
+      <Filter>Source Files\highgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\highgui\scatter.cpp">
       <Filter>Source Files\highgui</Filter>
     </ClCompile>
   </ItemGroup>

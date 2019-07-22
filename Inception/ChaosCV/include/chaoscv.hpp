@@ -15,6 +15,7 @@
 
 #include "highgui/highgui.hpp"
 #include "highgui/plot.hpp"
+#include "highgui/scatter.hpp"
 
 #include "utils/utils.hpp"
 #include "utils/numpy.hpp"
