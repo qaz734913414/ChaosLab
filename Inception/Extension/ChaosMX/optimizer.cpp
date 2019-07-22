@@ -16,12 +16,21 @@ namespace chaos
 
 				LoadSymbol(model.symbol);
 				LoadWeight(model.weight);
-
 			}
 
 			~MxOp()
 			{
 				//CHECK_EQ(0, MXSymbolFree(symbol)) << MXGetLastError();
+			}
+
+			void MergeBatchNorm() final
+			{
+				for (size_t i = 0; i < symbols.size(); i++)
+				{
+					if ("BatchNorm" == symbols[i].op.op_name)
+					{
+					}
+				}
 			}
 
 			void Export(const std::string& name) final
@@ -54,11 +63,12 @@ namespace chaos
 
 					memcpy(data.data, buff, data.Size());
 
-					auto name = Split(names[i], ":")[1];
-					weights[name] = data;
+					//auto name = Split(names[i], ":")[1];
+					weights[names[i]] = data;
+
+					CHECK_EQ(0, MXNDArrayFree(handles[i])) << MXGetLastError();
 				}
 			}
-			
 			void LoadSymbol(const std::string& file)
 			{
 
@@ -103,10 +113,10 @@ namespace chaos
 					{
 						std::vector<const char*> config_keys;
 						std::vector<const char*> config_vals;
-						for (auto& attr : sym.attrs)
+						for (const auto& attr : sym.attrs)
 						{
-							config_keys.push_back(attr.first.data());
-							config_vals.push_back(attr.second.data());
+							config_keys.push_back(attr.first.c_str());
+							config_vals.push_back(attr.second.c_str());
 						}
 						CHECK_EQ(0, MXSymbolCreateAtomicSymbol(sym.op.creator, (mx_uint)sym.attrs.size(), config_keys.data(), config_vals.data(), &handle) ) << MXGetLastError();
 
@@ -125,15 +135,38 @@ namespace chaos
 				CHECK_EQ(0, MXSymbolSaveToFile(handles.back(), file.c_str())) << MXGetLastError();
 
 				// Release
-				for (auto h : handles)
+				for (auto& h : handles)
 				{
 					CHECK_EQ(0, MXSymbolFree(h)) << MXGetLastError();
 				}
 			}
-
 			void SaveWeight(const std::string& file)
 			{
+				std::vector<NDArrayHandle> handles;
+				std::vector<const char*> keys;
+				for (const auto& w : weights)
+				{
+					NDArrayHandle handle;
 
+					std::vector<mx_uint> shape = w.second.shape;
+					CHECK_EQ(0, MXNDArrayCreate(shape.data(), shape.size(), 1, 0, false, &handle)) << MXGetLastError();
+
+					void* pdata = nullptr;
+					CHECK_EQ(0, MXNDArrayGetData(handle, &pdata)) << MXGetLastError();
+
+					memcpy(pdata, w.second.data, w.second.Size());
+
+					handles.push_back(handle);
+					keys.push_back(w.first.c_str());
+				}
+
+				CHECK_EQ(0, MXNDArraySave(file.c_str(), handles.size(), handles.data(), keys.data())) << MXGetLastError();
+
+				// Release
+				for (auto& h : handles)
+				{
+					CHECK_EQ(0, MXNDArrayFree(h)) << MXGetLastError();
+				}
 			}
 
 			std::map<std::string, Tensor> weights;
@@ -141,7 +174,7 @@ namespace chaos
 
 		};
 
-		Ptr<Optimizer> Optimizer::LoadMX(const Model& model)
+		Ptr<Optimizer> Optimizer::LoadMxNet(const Model& model)
 		{
 			return Ptr<Optimizer>(new MxOp(model));
 		}

@@ -33,7 +33,5 @@ namespace chaos
 			Attrs attrs;
 			std::vector<Inputs> inputs;
 		};
-
-
 	}
 }

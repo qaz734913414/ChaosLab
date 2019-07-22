@@ -13,9 +13,11 @@ namespace chaos
 			//virtual void Optimize() = 0;
 			virtual ~Optimizer() {}
 
+			virtual void MergeBatchNorm() = 0;
+
 			virtual void Export(const std::string& name) = 0;
 
-			static Ptr<Optimizer> LoadMX(const Model& model);
+			static Ptr<Optimizer> LoadMxNet(const Model& model);
 		};
 	}
 }
