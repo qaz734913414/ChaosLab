@@ -74,6 +74,7 @@ namespace chaos
 	{
 	public:
 		File();
+		File(const char* file);
 		File(const std::string& file);
 		File(const std::string& path, const std::string& name, const std::string& type);
 

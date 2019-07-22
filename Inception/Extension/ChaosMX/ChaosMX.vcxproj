@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{4AFE8F70-C027-4826-8DB0-DB8DB7833F65}</ProjectGuid>
-    <RootNamespace>ChaosCV</RootNamespace>
+    <ProjectGuid>{DF411FFC-CBD5-485D-B04E-6EEE58E4D473}</ProjectGuid>
+    <RootNamespace>ChaosMX</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -58,19 +58,19 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\Common\Props\ChaosEnv.props" />
+    <Import Project="..\..\..\Common\Props\MxNet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\Common\Props\ChaosEnv.props" />
+    <Import Project="..\..\..\Common\Props\MxNet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\Common\Props\ChaosEnv.props" />
+    <Import Project="..\..\..\Common\Props\MxNet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\Common\Props\ChaosEnv.props" />
+    <Import Project="..\..\..\Common\Props\MxNet.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -89,7 +89,7 @@
     <OutDir>$(SolutionDir)build\$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)build\Intermediate\$(ProjectName)\$(PlatformTarget)\$(Configuration)\</IntDir>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
@@ -102,7 +102,7 @@
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
@@ -150,32 +150,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\chaoscv.hpp" />
-    <ClInclude Include="include\core\allocator.hpp" />
-    <ClInclude Include="include\core\core.hpp" />
-    <ClInclude Include="include\core\def.hpp" />
-    <ClInclude Include="include\core\flags.hpp" />
-    <ClInclude Include="include\core\log.hpp" />
-    <ClInclude Include="include\dnn\layers\data_layer.hpp" />
-    <ClInclude Include="include\dnn\net.hpp" />
-    <ClInclude Include="include\dnn\optimizer.hpp" />
-    <ClInclude Include="include\dnn\reg.hpp" />
-    <ClInclude Include="include\dnn\tensor.hpp" />
-    <ClInclude Include="include\utils\json.hpp" />
-    <ClInclude Include="include\utils\numpy.hpp" />
+    <ClCompile Include="predictor.cpp" />
+    <ClCompile Include="operator.cpp" />
+    <ClCompile Include="optimizer.cpp" />
+    <ClCompile Include="symbol.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\allocator.cpp" />
-    <ClCompile Include="src\core\core.cpp" />
-    <ClCompile Include="src\core\file.cpp" />
-    <ClCompile Include="src\core\flags.cpp" />
-    <ClCompile Include="src\core\log.cpp" />
-    <ClCompile Include="src\dnn\layers\data_layer.cpp" />
-    <ClCompile Include="src\dnn\net.cpp" />
-    <ClCompile Include="src\dnn\reg.cpp" />
-    <ClCompile Include="src\dnn\tensor.cpp" />
-    <ClCompile Include="src\utils\json.cpp" />
-    <ClCompile Include="src\utils\numpy.cpp" />
+    <ClInclude Include="base.hpp" />
+    <ClInclude Include="operator.hpp" />
+    <ClInclude Include="symbol.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

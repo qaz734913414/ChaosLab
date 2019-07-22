@@ -6,11 +6,19 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox\Sandbox.vcxproj", "{9B040A06-3F32-4982-9320-43BFF521BB06}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4AFE8F70-C027-4826-8DB0-DB8DB7833F65} = {4AFE8F70-C027-4826-8DB0-DB8DB7833F65}
+		{DF411FFC-CBD5-485D-B04E-6EEE58E4D473} = {DF411FFC-CBD5-485D-B04E-6EEE58E4D473}
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Inception", "Inception", "{F3CF3E68-94EF-4F7B-900A-8DE189CA462D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChaosCV", "Inception\ChaosCV\ChaosCV.vcxproj", "{4AFE8F70-C027-4826-8DB0-DB8DB7833F65}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extension", "Extension", "{912E6DFE-81D8-48F8-B2F0-91C66D1E22C6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChaosMX", "Inception\Extension\ChaosMX\ChaosMX.vcxproj", "{DF411FFC-CBD5-485D-B04E-6EEE58E4D473}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4AFE8F70-C027-4826-8DB0-DB8DB7833F65} = {4AFE8F70-C027-4826-8DB0-DB8DB7833F65}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,12 +44,22 @@ Global
 		{4AFE8F70-C027-4826-8DB0-DB8DB7833F65}.Release|x64.Build.0 = Release|x64
 		{4AFE8F70-C027-4826-8DB0-DB8DB7833F65}.Release|x86.ActiveCfg = Release|Win32
 		{4AFE8F70-C027-4826-8DB0-DB8DB7833F65}.Release|x86.Build.0 = Release|Win32
+		{DF411FFC-CBD5-485D-B04E-6EEE58E4D473}.Debug|x64.ActiveCfg = Debug|x64
+		{DF411FFC-CBD5-485D-B04E-6EEE58E4D473}.Debug|x64.Build.0 = Debug|x64
+		{DF411FFC-CBD5-485D-B04E-6EEE58E4D473}.Debug|x86.ActiveCfg = Debug|Win32
+		{DF411FFC-CBD5-485D-B04E-6EEE58E4D473}.Debug|x86.Build.0 = Debug|Win32
+		{DF411FFC-CBD5-485D-B04E-6EEE58E4D473}.Release|x64.ActiveCfg = Release|x64
+		{DF411FFC-CBD5-485D-B04E-6EEE58E4D473}.Release|x64.Build.0 = Release|x64
+		{DF411FFC-CBD5-485D-B04E-6EEE58E4D473}.Release|x86.ActiveCfg = Release|Win32
+		{DF411FFC-CBD5-485D-B04E-6EEE58E4D473}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4AFE8F70-C027-4826-8DB0-DB8DB7833F65} = {F3CF3E68-94EF-4F7B-900A-8DE189CA462D}
+		{912E6DFE-81D8-48F8-B2F0-91C66D1E22C6} = {F3CF3E68-94EF-4F7B-900A-8DE189CA462D}
+		{DF411FFC-CBD5-485D-B04E-6EEE58E4D473} = {912E6DFE-81D8-48F8-B2F0-91C66D1E22C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4F916F7D-213F-496C-9256-930BCBB42BFB}

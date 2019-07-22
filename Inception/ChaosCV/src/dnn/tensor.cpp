@@ -36,6 +36,21 @@ namespace chaos
 			}
 		}
 
+		inline std::string ToString(const Depth& depth)
+		{
+			switch (depth)
+			{
+			case F32:
+				return "float32";
+			case F16:
+				return "float16";
+			case U8:
+				return "uint8";
+			default:
+				return "unknown";
+			}
+		}
+
 		Shape::Shape() : shape(std::vector<int>()) {}
 
 		void Shape::Swap(Shape& _shape)
@@ -43,18 +58,23 @@ namespace chaos
 			shape.swap(_shape.shape);
 		}
 		size_t Shape::Size() const { return shape.size(); }
-		int Shape::operator[](size_t idx) const { return shape[idx]; }
+		const int& Shape::operator[](size_t idx) const { return shape[idx]; }
+		int& Shape::operator[](size_t idx) { return shape[idx]; }
 		inline std::ostream& operator<<(std::ostream& stream, const Shape& shape)
 		{
+			return stream << shape.ToString();
+		}
+		std::string Shape::ToString() const
+		{
+			std::stringstream stream;
 			stream << "(";
-			for (int i = 0; i < shape.Size() - 1; i++)
+			for (int i = 0; i < Size() - 1; i++)
 			{
 				stream << shape[i] << ", ";
 			}
-			stream << shape[shape.Size() - 1] << ")";
-			return stream;
+			stream << shape[Size() - 1] << ")";
+			return stream.str();
 		}
-
 		std::vector<int>::const_iterator Shape::begin() const
 		{
 			return shape.begin();
@@ -184,10 +204,6 @@ namespace chaos
 			return _data;
 		}
 
-
-
-
-
 		void Tensor::Create(const Shape& _shape, const Depth& _depth, bool _aligned, Allocator* _allocator)
 		{
 			if (shape == _shape && depth == _depth && allocator == _allocator) return;
@@ -238,6 +254,25 @@ namespace chaos
 			ref_cnt = nullptr;
 		}
 
+		Tensor Tensor::Flatten()
+		{
+			if (IsContinue())
+			{
+				return *this;
+			}
+			else
+			{
+				Tensor flattened = Tensor(shape, depth, /*aligned=*/false, allocator);
+				auto num = Total() / cstep;
+				for (int n = 0; n < num; n++)
+				{
+					const void* src = (unsigned char*)data + n * cstep * depth;
+					void* dst = (unsigned char*)flattened.data + n * flattened.cstep * flattened.depth;
+					memcpy(dst, src, flattened.cstep * flattened.depth);
+				}
+				return flattened;
+			}
+		}
 
 		Tensor Tensor::Reshape(const Shape& new_shape)
 		{
@@ -252,27 +287,20 @@ namespace chaos
 
 			if (!aligned)
 			{
-				memcpy(new_tensor.data, data, Size() * depth);
+				// Slow
+				memcpy(new_tensor.data, data, Size() * depth); 
 			}
 			else
 			{
 				// Flatten
-				Tensor flatten = Tensor(shape, depth, /*aligned=*/false, allocator);
-				
-				auto num = Total() / cstep;
-				for (int n = 0; n < num; n++)
-				{
-					const void* src = (unsigned char*)data + n * cstep * depth;
-					void* dst = (unsigned char*)flatten.data + n * flatten.cstep * flatten.depth;
-					memcpy(dst, src, flatten.cstep * flatten.depth);
-				}
+				Tensor flattened = Flatten();
 
 				// Copy to new shape
 				auto new_num = new_tensor.Total() / new_tensor.cstep;
 				auto csize = new_tensor.Size() / new_num;
 				for (int n = 0; n < new_num; n++)
 				{
-					const void* src = (unsigned char*)flatten.data + n * csize * flatten.depth;
+					const void* src = (unsigned char*)flattened.data + n * csize * flattened.depth;
 					void* dst = (unsigned char*)new_tensor.data + n * new_tensor.cstep * new_tensor.depth;
 					memcpy(dst, src, csize * new_tensor.depth);
 				}
@@ -325,7 +353,7 @@ namespace chaos
 				}
 				//stream << Mat(h, w, Cast(tensor.depth), slice);
 			}
-			stream << "<Tensor " << tensor.shape << ">";
+			stream << "<Tensor " << tensor.shape << ", dtype=" << ToString(tensor.depth) << ">";
 			return stream;
 		}
 	}
