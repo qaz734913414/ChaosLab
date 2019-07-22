@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="mtcnn.cpp" />
     <ClCompile Include="predictor.cpp" />
     <ClCompile Include="operator.cpp" />
     <ClCompile Include="optimizer.cpp" />

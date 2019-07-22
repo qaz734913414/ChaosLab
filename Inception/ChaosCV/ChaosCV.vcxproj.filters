@@ -37,6 +37,12 @@
     <Filter Include="Source Files\utils">
       <UniqueIdentifier>{7b85fa57-ac1e-46e5-bf42-07acb12ddad0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\face">
+      <UniqueIdentifier>{87dcb894-4c99-46f3-9f30-e97b4fba32a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\face">
+      <UniqueIdentifier>{035b237a-6659-429a-b2b9-4624a6961ca9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\chaoscv.hpp">
@@ -78,6 +84,21 @@
     <ClInclude Include="include\dnn\optimizer.hpp">
       <Filter>Header Files\dnn</Filter>
     </ClInclude>
+    <ClInclude Include="include\dnn\group.hpp">
+      <Filter>Header Files\dnn</Filter>
+    </ClInclude>
+    <ClInclude Include="include\face\face_info.hpp">
+      <Filter>Header Files\face</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\utils.hpp">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\face\detector.hpp">
+      <Filter>Header Files\face</Filter>
+    </ClInclude>
+    <ClInclude Include="include\face\aligner.hpp">
+      <Filter>Header Files\face</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\core.cpp">
@@ -112,6 +133,18 @@
     </ClCompile>
     <ClCompile Include="src\utils\json.cpp">
       <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dnn\group.cpp">
+      <Filter>Source Files\dnn</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\utils.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\face\face_info.cpp">
+      <Filter>Source Files\face</Filter>
+    </ClCompile>
+    <ClCompile Include="src\face\l5_aligner.cpp">
+      <Filter>Source Files\face</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
