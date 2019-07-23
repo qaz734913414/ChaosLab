@@ -49,6 +49,12 @@
     <Filter Include="Source Files\highgui">
       <UniqueIdentifier>{b7ba12d7-c41e-4e55-957a-9598dd6888ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\test">
+      <UniqueIdentifier>{df1ffb44-3094-4fbc-9fab-72b87860a27c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\test">
+      <UniqueIdentifier>{3b708e97-62c2-4daa-aec1-4942e368394a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\chaoscv.hpp">
@@ -120,6 +126,15 @@
     <ClInclude Include="include\core\version.hpp">
       <Filter>Header Files\core</Filter>
     </ClInclude>
+    <ClInclude Include="include\test\test_data.hpp">
+      <Filter>Header Files\test</Filter>
+    </ClInclude>
+    <ClInclude Include="include\test\confusion.hpp">
+      <Filter>Header Files\test</Filter>
+    </ClInclude>
+    <ClInclude Include="include\test\cumulative.hpp">
+      <Filter>Header Files\test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\core.cpp">
@@ -175,6 +190,12 @@
     </ClCompile>
     <ClCompile Include="src\highgui\scatter.cpp">
       <Filter>Source Files\highgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test\confusion.cpp">
+      <Filter>Source Files\test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test\cumulative.cpp">
+      <Filter>Source Files\test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
