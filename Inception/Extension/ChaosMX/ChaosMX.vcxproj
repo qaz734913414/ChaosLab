@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{4AFE8F70-C027-4826-8DB0-DB8DB7833F65}</ProjectGuid>
-    <RootNamespace>ChaosCV</RootNamespace>
+    <ProjectGuid>{DF411FFC-CBD5-485D-B04E-6EEE58E4D473}</ProjectGuid>
+    <RootNamespace>ChaosMX</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -58,19 +58,19 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\Common\Props\ChaosEnv.props" />
+    <Import Project="..\..\..\Common\Props\MxNet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\Common\Props\ChaosEnv.props" />
+    <Import Project="..\..\..\Common\Props\MxNet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\Common\Props\ChaosEnv.props" />
+    <Import Project="..\..\..\Common\Props\MxNet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\Common\Props\ChaosEnv.props" />
+    <Import Project="..\..\..\Common\Props\MxNet.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -89,22 +89,6 @@
     <OutDir>$(SolutionDir)build\$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)build\Intermediate\$(ProjectName)\$(PlatformTarget)\$(Configuration)\</IntDir>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <PreprocessorDefinitions>CHAOS_EXPORT;_MSC_PLATFORM_TARGET=$(PlatformTarget);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-    </Link>
-    <PreBuildEvent>
-      <Command>python "$(SolutionDir)Inception\Scripts\AddBuildNumber.py" "$(ProjectDir)include\core\version.hpp"</Command>
-    </PreBuildEvent>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -118,7 +102,23 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PreBuildEvent>
-      <Command>python "$(SolutionDir)Inception\Scripts\AddBuildNumber.py" "$(ProjectDir)include\core\version.hpp"</Command>
+      <Command>python "$(SolutionDir)Inception\Scripts\AddBuildNumber.py" "$(ProjectDir)version.hpp"</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <PreprocessorDefinitions>CHAOS_EXPORT;_MSC_PLATFORM_TARGET=$(PlatformTarget);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <PreBuildEvent>
+      <Command>python "$(SolutionDir)Inception\Scripts\AddBuildNumber.py" "$(ProjectDir)version.hpp"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -138,7 +138,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>python "$(SolutionDir)Inception\Scripts\AddBuildNumber.py" "$(ProjectDir)include\core\version.hpp"</Command>
+      <Command>python "$(SolutionDir)Inception\Scripts\AddBuildNumber.py" "$(ProjectDir)version.hpp"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -158,56 +158,26 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>python "$(SolutionDir)Inception\Scripts\AddBuildNumber.py" "$(ProjectDir)include\core\version.hpp"</Command>
+      <Command>python "$(SolutionDir)Inception\Scripts\AddBuildNumber.py" "$(ProjectDir)version.hpp"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\chaoscv.hpp" />
-    <ClInclude Include="include\core\allocator.hpp" />
-    <ClInclude Include="include\core\core.hpp" />
-    <ClInclude Include="include\core\def.hpp" />
-    <ClInclude Include="include\core\flags.hpp" />
-    <ClInclude Include="include\core\log.hpp" />
-    <ClInclude Include="include\core\version.hpp" />
-    <ClInclude Include="include\dnn\group.hpp" />
-    <ClInclude Include="include\dnn\layers\data_layer.hpp" />
-    <ClInclude Include="include\dnn\net.hpp" />
-    <ClInclude Include="include\dnn\optimizer.hpp" />
-    <ClInclude Include="include\dnn\reg.hpp" />
-    <ClInclude Include="include\dnn\tensor.hpp" />
-    <ClInclude Include="include\face\aligner.hpp" />
-    <ClInclude Include="include\face\detector.hpp" />
-    <ClInclude Include="include\face\face_info.hpp" />
-    <ClInclude Include="include\highgui\highgui.hpp" />
-    <ClInclude Include="include\highgui\plot.hpp" />
-    <ClInclude Include="include\highgui\scatter.hpp" />
-    <ClInclude Include="include\utils\json.hpp" />
-    <ClInclude Include="include\utils\numpy.hpp" />
-    <ClInclude Include="include\utils\utils.hpp" />
+    <ClCompile Include="mtcnn.cpp" />
+    <ClCompile Include="predictor.cpp" />
+    <ClCompile Include="operator.cpp" />
+    <ClCompile Include="optimizer.cpp" />
+    <ClCompile Include="symbol.cpp" />
+    <ClCompile Include="version.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="base.hpp" />
+    <ClInclude Include="operator.hpp" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="symbol.hpp" />
+    <ClInclude Include="version.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\allocator.cpp" />
-    <ClCompile Include="src\core\core.cpp" />
-    <ClCompile Include="src\core\file.cpp" />
-    <ClCompile Include="src\core\flags.cpp" />
-    <ClCompile Include="src\core\log.cpp" />
-    <ClCompile Include="src\dnn\group.cpp" />
-    <ClCompile Include="src\dnn\layers\data_layer.cpp" />
-    <ClCompile Include="src\dnn\net.cpp" />
-    <ClCompile Include="src\dnn\reg.cpp" />
-    <ClCompile Include="src\dnn\tensor.cpp" />
-    <ClCompile Include="src\face\face_info.cpp" />
-    <ClCompile Include="src\face\l5_aligner.cpp" />
-    <ClCompile Include="src\highgui\highgui.cpp" />
-    <ClCompile Include="src\highgui\plot.cpp" />
-    <ClCompile Include="src\highgui\scatter.cpp" />
-    <ClCompile Include="src\utils\json.cpp" />
-    <ClCompile Include="src\utils\numpy.cpp" />
-    <ClCompile Include="src\utils\utils.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="ChaosCV.rc" />
+    <ResourceCompile Include="ChaosMX.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

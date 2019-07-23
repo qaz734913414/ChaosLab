@@ -19,6 +19,36 @@
     <Filter Include="Source Files\core">
       <UniqueIdentifier>{147ed6ca-5d27-4357-9174-b372187ed09a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\dnn">
+      <UniqueIdentifier>{3b58e7df-4f56-4982-8eb2-ab44a6b7a3a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dnn">
+      <UniqueIdentifier>{71a92abe-b985-4a13-9d5e-f24dfe42cd2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dnn\layers">
+      <UniqueIdentifier>{73e493e7-fe0b-4673-8d88-051c5cb05b39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dnn\layers">
+      <UniqueIdentifier>{c0e5764b-9e78-4d8a-8a6b-c6fa0ab32d27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utils">
+      <UniqueIdentifier>{4befceb6-b73b-48dd-a1b5-c660f6e28d81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{7b85fa57-ac1e-46e5-bf42-07acb12ddad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\face">
+      <UniqueIdentifier>{87dcb894-4c99-46f3-9f30-e97b4fba32a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\face">
+      <UniqueIdentifier>{035b237a-6659-429a-b2b9-4624a6961ca9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\highgui">
+      <UniqueIdentifier>{16b42ba8-8bd1-47c2-a50c-1507beafa91c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\highgui">
+      <UniqueIdentifier>{b7ba12d7-c41e-4e55-957a-9598dd6888ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\chaoscv.hpp">
@@ -39,6 +69,57 @@
     <ClInclude Include="include\core\allocator.hpp">
       <Filter>Header Files\core</Filter>
     </ClInclude>
+    <ClInclude Include="include\dnn\tensor.hpp">
+      <Filter>Header Files\dnn</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dnn\net.hpp">
+      <Filter>Header Files\dnn</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dnn\layers\data_layer.hpp">
+      <Filter>Header Files\dnn\layers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dnn\reg.hpp">
+      <Filter>Header Files\dnn</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\numpy.hpp">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\json.hpp">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dnn\optimizer.hpp">
+      <Filter>Header Files\dnn</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dnn\group.hpp">
+      <Filter>Header Files\dnn</Filter>
+    </ClInclude>
+    <ClInclude Include="include\face\face_info.hpp">
+      <Filter>Header Files\face</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\utils.hpp">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\face\detector.hpp">
+      <Filter>Header Files\face</Filter>
+    </ClInclude>
+    <ClInclude Include="include\face\aligner.hpp">
+      <Filter>Header Files\face</Filter>
+    </ClInclude>
+    <ClInclude Include="include\highgui\highgui.hpp">
+      <Filter>Header Files\highgui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\highgui\plot.hpp">
+      <Filter>Header Files\highgui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\highgui\scatter.hpp">
+      <Filter>Header Files\highgui</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\version.hpp">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\core.cpp">
@@ -56,5 +137,49 @@
     <ClCompile Include="src\core\allocator.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
+    <ClCompile Include="src\dnn\tensor.cpp">
+      <Filter>Source Files\dnn</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dnn\net.cpp">
+      <Filter>Source Files\dnn</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dnn\layers\data_layer.cpp">
+      <Filter>Source Files\dnn\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dnn\reg.cpp">
+      <Filter>Source Files\dnn</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\numpy.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\json.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dnn\group.cpp">
+      <Filter>Source Files\dnn</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\utils.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\face\face_info.cpp">
+      <Filter>Source Files\face</Filter>
+    </ClCompile>
+    <ClCompile Include="src\face\l5_aligner.cpp">
+      <Filter>Source Files\face</Filter>
+    </ClCompile>
+    <ClCompile Include="src\highgui\highgui.cpp">
+      <Filter>Source Files\highgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\highgui\plot.cpp">
+      <Filter>Source Files\highgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\highgui\scatter.cpp">
+      <Filter>Source Files\highgui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ChaosCV.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

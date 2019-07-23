@@ -21,6 +21,7 @@ namespace chaos
 	using Point = cv::Point2f;
 	using Size = cv::Size2f;
 	using Rect = cv::Rect2f;
+	using Scalar = cv::Scalar;
 	// cv::Range do not support float
 	using Range = cv::Vec2f; // <min, max>
 
@@ -74,6 +75,7 @@ namespace chaos
 	{
 	public:
 		File();
+		File(const char* file);
 		File(const std::string& file);
 		File(const std::string& path, const std::string& name, const std::string& type);
 
@@ -102,6 +104,10 @@ namespace chaos
 	CHAOS_API std::vector<std::string> Split(const std::string& data, const std::string& delimiter);
 	/// <summary>Remove all space and line break</summary>
 	CHAOS_API std::string Shrink(const std::string& data);
+
+	CHAOS_API std::string GetVersionInfo();
+	/// <summary>ChaosMX Version Info</summary>
+	CHAOS_API std::string GetMXVI(); 
 
 	void SetConsoleTextColor(unsigned short color);
 
