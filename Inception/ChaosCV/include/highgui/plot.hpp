@@ -35,4 +35,15 @@ namespace chaos
 	protected:
 		virtual void Apply(const Mat& x, const Mat& y) = 0;
 	};
+
+	template<class ... Args>
+	void Coordinate2D::Plot(const Mat& x, const Mat& y, Args ... args)
+	{
+		auto aux = PlotFigure::Figure();
+		aux->Plot(x, y, args...);
+		aux->Set("XRange", x_range, "YRange", y_range);
+
+		aux->DrawOn(figure);
+	}
+
 } // namespace chaos

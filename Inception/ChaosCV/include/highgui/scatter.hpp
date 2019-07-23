@@ -24,4 +24,14 @@ namespace chaos
 	protected:
 		virtual void Apply(const std::vector<Point>& points) = 0;
 	};
+
+	template<class ... Args>
+	void Coordinate2D::Scatter(const std::vector<Point>& points, Args ... args)
+	{
+		auto aux = ScatterFigure::Figure();
+		aux->Scatter(points, args...);
+		aux->Set("XRange", x_range, "YRange", y_range, "Loose", 0);
+
+		aux->DrawOn(figure); 
+	}
 }

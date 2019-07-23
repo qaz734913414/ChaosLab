@@ -68,7 +68,6 @@ namespace chaos
 	};
 
 
-
 	class CHAOS_API Figure : public IndefiniteParameter
 	{
 	public:
@@ -79,6 +78,7 @@ namespace chaos
 		virtual void Show() = 0;
 		virtual Mat Draw() = 0;
 
+		virtual void DrawOn(Mat& fig) = 0;
 	protected:
 		static int idx;
 		std::string name;
@@ -95,18 +95,25 @@ namespace chaos
 
 	class CHAOS_API Coordinate2D : public Figure
 	{
-	protected:
+	public:
 		Coordinate2D(const std::string& name);
 		virtual ~Coordinate2D();
+
+		template<class ... Args>
+		void Plot(const Mat& x, const Mat& y, Args ... args);
+
+		template<class ... Args>
+		void Scatter(const std::vector<Point>& points, Args ... args);
+
+	protected:
+		Range x_range;
+		Range y_range;
 
 		float MappingX(float value);
 		float MappingY(float value);
 
 		/// <summary>To show the axis and labels</summary>
 		virtual void ShowTags(double loose_x = 0, double loose_y = 0);
-
-		Range x_range;
-		Range y_range;
 
 		std::string x_label;
 		std::string y_label;

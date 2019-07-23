@@ -13,8 +13,6 @@ namespace chaos
 
 		void Show() final
 		{
-			figure = ColorPool::Get(WHITE);
-
 			ShowTags();
 
 			ShowLegends();
@@ -31,8 +29,6 @@ namespace chaos
 
 		Mat Draw() final
 		{
-			figure = ColorPool::Get(WHITE);
-
 			ShowTags();
 
 			ShowLegends();
@@ -43,6 +39,13 @@ namespace chaos
 			ColorPool::Reset();
 
 			return figure;
+		}
+
+		void DrawOn(Mat& fig) final
+		{
+			figure = fig;
+			ShowCurves();
+			ColorPool::Reset();
 		}
 
 		void Apply(const Mat& x, const Mat& y) final

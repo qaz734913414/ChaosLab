@@ -1,5 +1,8 @@
 #include "highgui/highgui.hpp"
 
+#include "highgui/plot.hpp"
+#include "highgui/scatter.hpp"
+
 namespace chaos
 {
 	std::vector<Color> CreateColorPool()
@@ -42,7 +45,7 @@ namespace chaos
 		idx = 0;
 	}
 
-
+	
 
 	int Figure::idx = 0;
 	Figure::Figure(const std::string& _name) : IndefiniteParameter()
@@ -56,6 +59,7 @@ namespace chaos
 	void Figure::Hold(State s)
 	{
 		state = s;
+		figure = ColorPool::Get(WHITE);
 	}
 
 	Coordinate2D::Coordinate2D(const std::string& name) : Figure(name)

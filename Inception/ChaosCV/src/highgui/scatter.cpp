@@ -13,8 +13,6 @@ namespace chaos
 
 		void Show() final
 		{
-			figure = ColorPool::Get(WHITE);
-
 			ShowTags(loose, loose);
 
 			ShowLegends();
@@ -28,8 +26,6 @@ namespace chaos
 
 		Mat Draw() final
 		{
-			figure = ColorPool::Get(WHITE);
-
 			ShowTags(loose, loose);
 
 			ShowLegends();
@@ -39,6 +35,13 @@ namespace chaos
 
 			ColorPool::Reset();
 			return figure;
+		}
+
+		void DrawOn(Mat& fig) final
+		{
+			figure = fig;
+			ShowScatter();
+			ColorPool::Reset();
 		}
 
 		void Apply(const std::vector<Point>& points) final
