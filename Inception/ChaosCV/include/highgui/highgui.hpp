@@ -103,7 +103,7 @@ namespace chaos
 		float MappingY(float value);
 
 		/// <summary>To show the axis and labels</summary>
-		virtual void ShowTags(float loose = 0.f);
+		virtual void ShowTags(double loose_x = 0, double loose_y = 0);
 
 		Range x_range;
 		Range y_range;

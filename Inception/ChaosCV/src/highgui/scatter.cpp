@@ -15,8 +15,9 @@ namespace chaos
 		{
 			figure = ColorPool::Get(WHITE);
 
-			ShowTags(0.3);
+			ShowTags(loose, loose);
 
+			ShowLegends();
 			ShowScatter();
 
 			cv::rectangle(figure, roi, ColorPool::Get(BLACK));
@@ -29,8 +30,9 @@ namespace chaos
 		{
 			figure = ColorPool::Get(WHITE);
 
-			ShowTags(0.3);
+			ShowTags(loose, loose);
 
+			ShowLegends();
 			ShowScatter();
 
 			cv::rectangle(figure, roi, ColorPool::Get(BLACK));
@@ -92,11 +94,11 @@ namespace chaos
 					float x_value = MappingX(point.x);
 					float y_value = MappingY(point.y);
 
-					cv::Point2i position = Point(x_value, y_value);
+					cv::Point pos = Point(x_value, y_value);
 					switch (pts_marker[n])
 					{
 					case MARKER_CIRCLE:
-						cv::circle(scatter, position, pts_radius[n], pts_color[n], pts_radius[n], cv::LINE_AA);
+						cv::circle(scatter, pos, pts_radius[n] * 2, pts_color[n], pts_radius[n], cv::LINE_AA);
 						break;
 					case MARKER_CROSS:
 					case MARKER_TILTED_CROSS:
@@ -105,10 +107,10 @@ namespace chaos
 					case MARKER_SQUARE:
 					case MARKER_TRIANGLE_UP:
 					case MARKER_TRIANGLE_DOWN:
-						cv::drawMarker(scatter, position, pts_color[n], pts_marker[n], pts_radius[n], pts_radius[n], cv::LINE_AA);
+						cv::drawMarker(scatter, pos, pts_color[n], pts_marker[n], pts_radius[n] * 4, pts_radius[n], cv::LINE_AA);
 						break;
 					default:
-						cv::circle(scatter, position, 4, pts_color[n], -1, cv::LINE_AA);
+						cv::circle(scatter, pos, pts_radius[n] * 2, pts_color[n], -1, cv::LINE_AA);
 						break;
 					}
 				}
@@ -229,6 +231,9 @@ namespace chaos
 				case "YRange"_hash:
 					y_range = std::any_cast<Range>(arg_value);
 					break;
+				case "Loose"_hash:
+					loose = std::any_cast<double>(arg_value);
+					break;
 				default:
 					LOG(WARNING) << "Unknown arg " << arg;
 					break;
@@ -240,10 +245,11 @@ namespace chaos
 			}
 		}
 
-		std::set<std::string> args_list = { "Radius", "Color", "Marker", "Legend", "Title", "XLabel", "YLabel", "XRange", "YRange" };
+		std::set<std::string> args_list = { "Radius", "Color", "Marker", "Legend", "Title", "XLabel", "YLabel", "XRange", "YRange", "Loose" };
 
 		std::vector<std::vector<Point>> pts_data;
 
+		double loose = 0.1;
 		std::vector<Color> pts_color;
 		std::vector<int> pts_radius;
 		std::vector<int> pts_marker;

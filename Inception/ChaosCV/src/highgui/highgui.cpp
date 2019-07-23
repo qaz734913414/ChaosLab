@@ -74,7 +74,7 @@ namespace chaos
 		return (roi.height - 1.f) - (value - y_range[0]) / (y_range[1] - y_range[0]) * (roi.height - 1.f);
 	}
 
-	void Coordinate2D::ShowTags(float loose)
+	void Coordinate2D::ShowTags(double loose_x, double loose_y)
 	{
 		// Common params for font
 		auto font_face = cv::HersheyFonts::FONT_HERSHEY_SIMPLEX;
@@ -84,8 +84,8 @@ namespace chaos
 		if ((double)x_range[1] - x_range[0] < 1e-8) x_range = Range(x_range[0] - 0.5f, x_range[1] + 0.5f);
 		if ((double)y_range[1] - y_range[0] < 1e-8) y_range = Range(y_range[0] - 0.5f, y_range[1] + 0.5f);
 
-		float x_loose = (x_range[1] - x_range[0]) * loose;
-		float y_loose = (y_range[1] - y_range[0]) * loose;
+		float x_loose = (x_range[1] - x_range[0]) * (float)loose_x;
+		float y_loose = (y_range[1] - y_range[0]) * (float)loose_y;
 		x_range[1] += x_loose;
 		x_range[0] -= x_loose;
 		y_range[1] += y_loose;
@@ -191,4 +191,5 @@ namespace chaos
 				font_face, font_scale, ColorPool::Get(BLACK), 1, cv::LINE_AA);
 		}
 	}
+
 }
