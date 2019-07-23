@@ -106,6 +106,9 @@ namespace chaos
 	CHAOS_API std::string Shrink(const std::string& data);
 
 	CHAOS_API std::string GetVersionInfo();
+	/// <summary>ChaosMX Version Info</summary>
+	CHAOS_API std::string GetMXVI(); 
+
 	void SetConsoleTextColor(unsigned short color);
 
 	constexpr size_t prime = 0x100000001B3ull;

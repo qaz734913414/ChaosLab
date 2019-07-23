@@ -96,11 +96,14 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <PreprocessorDefinitions>CHAOS_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CHAOS_EXPORT;_MSC_PLATFORM_TARGET=$(PlatformTarget);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
     </Link>
+    <PreBuildEvent>
+      <Command>python "$(SolutionDir)Inception\Scripts\AddBuildNumber.py" "$(ProjectDir)version.hpp"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -109,11 +112,14 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <PreprocessorDefinitions>CHAOS_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CHAOS_EXPORT;_MSC_PLATFORM_TARGET=$(PlatformTarget);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
     </Link>
+    <PreBuildEvent>
+      <Command>python "$(SolutionDir)Inception\Scripts\AddBuildNumber.py" "$(ProjectDir)version.hpp"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -124,13 +130,16 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <PreprocessorDefinitions>CHAOS_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CHAOS_EXPORT;_MSC_PLATFORM_TARGET=$(PlatformTarget);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PreBuildEvent>
+      <Command>python "$(SolutionDir)Inception\Scripts\AddBuildNumber.py" "$(ProjectDir)version.hpp"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -141,13 +150,16 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <PreprocessorDefinitions>CHAOS_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CHAOS_EXPORT;_MSC_PLATFORM_TARGET=$(PlatformTarget);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PreBuildEvent>
+      <Command>python "$(SolutionDir)Inception\Scripts\AddBuildNumber.py" "$(ProjectDir)version.hpp"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="mtcnn.cpp" />
@@ -155,11 +167,17 @@
     <ClCompile Include="operator.cpp" />
     <ClCompile Include="optimizer.cpp" />
     <ClCompile Include="symbol.cpp" />
+    <ClCompile Include="version.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.hpp" />
     <ClInclude Include="operator.hpp" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="symbol.hpp" />
+    <ClInclude Include="version.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ChaosMX.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

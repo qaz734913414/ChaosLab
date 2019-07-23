@@ -20,6 +20,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChaosMX", "Inception\Extens
 		{4AFE8F70-C027-4826-8DB0-DB8DB7833F65} = {4AFE8F70-C027-4826-8DB0-DB8DB7833F65}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{100C4A2E-BEF4-4F1F-87B4-303F852DBC8A}"
+	ProjectSection(SolutionItems) = preProject
+		Inception\Scripts\AddBuildNumber.py = Inception\Scripts\AddBuildNumber.py
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -60,6 +65,7 @@ Global
 		{4AFE8F70-C027-4826-8DB0-DB8DB7833F65} = {F3CF3E68-94EF-4F7B-900A-8DE189CA462D}
 		{912E6DFE-81D8-48F8-B2F0-91C66D1E22C6} = {F3CF3E68-94EF-4F7B-900A-8DE189CA462D}
 		{DF411FFC-CBD5-485D-B04E-6EEE58E4D473} = {912E6DFE-81D8-48F8-B2F0-91C66D1E22C6}
+		{100C4A2E-BEF4-4F1F-87B4-303F852DBC8A} = {F3CF3E68-94EF-4F7B-900A-8DE189CA462D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4F916F7D-213F-496C-9256-930BCBB42BFB}
