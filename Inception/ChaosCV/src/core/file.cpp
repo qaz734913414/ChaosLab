@@ -2,6 +2,8 @@
 
 #include <regex>
 
+#include <io.h>
+#include <direct.h>
 #include <Windows.h>
 
 
@@ -115,4 +117,41 @@ namespace chaos
 
 		FindClose(handle);
 	}
+
+
+	void Copy(const File& from, const File& to, bool force)
+	{
+		auto folders = Split(to.Path, "\\\\");
+		std::string path = folders[0] + "\\";
+		for (size_t i = 1; i < folders.size(); i++)
+		{
+			path += (folders[i] + "\\");
+			if (0 != _access(path.c_str(), 6))
+			{
+				if (force) CHECK_EQ(0, _mkdir(path.c_str()));
+			}
+		}
+		CHECK_EQ(0, CopyFile(std::string(from).c_str(), std::string(to).c_str(), false)) 
+			<< "Can not copy file " << from << " to " << to;
+	}
+	void Move(const File& from, const File& to, bool force)
+	{
+		auto folders = Split(to.Path, "\\\\");
+		std::string path = folders[0] + "\\";
+		for (size_t i = 1; i < folders.size(); i++)
+		{
+			path += (folders[i] + "\\");
+			if (0 != _access(path.c_str(), 6))
+			{
+				if (force) CHECK_EQ(0, _mkdir(path.c_str()));
+			}
+		}
+		CHECK_EQ(0, MoveFile(std::string(from).c_str(), std::string(to).c_str()))
+			<< "Can not move file " << from << " to " << to;
+	}
+	void Delete(const File& file)
+	{
+		CHECK(DeleteFile(std::string(file).c_str())) << "Can not delete file " << file;
+	}
 }
+

@@ -100,6 +100,10 @@ namespace chaos
 	typedef void(*PBCallback)(int);
 	CHAOS_API void GetFileList(const std::string& folder, FileList& list, const std::string& types = "*", const PBCallback& update = nullptr);
 
+	CHAOS_API void Copy(const File& from, const File& to, bool force = false);
+	CHAOS_API void Move(const File& from, const File& to, bool force = false);
+	CHAOS_API void Delete(const File& file);
+
 	/// <summary>Split the string data by delimiter</summary>
 	CHAOS_API std::vector<std::string> Split(const std::string& data, const std::string& delimiter);
 	/// <summary>Remove all space and line break</summary>
