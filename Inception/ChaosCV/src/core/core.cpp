@@ -1,4 +1,5 @@
 #include "core/core.hpp"
+#include "core/version.hpp"
 
 #include <regex>
 
@@ -135,6 +136,13 @@ namespace chaos
 } // namespace chaos
 
 #include <Windows.h>
+
+std::string chaos::GetVersionInfo()
+{
+	std::stringstream ss;
+	ss << "ChaosCV " << RELEASE_VER_STR << " [MSC v." << _MSC_VER << " " << __T(_MSC_PLATFORM_TARGET) << "bit]";
+	return ss.str();
+}
 
 void chaos::SetConsoleTextColor(unsigned short color)
 {

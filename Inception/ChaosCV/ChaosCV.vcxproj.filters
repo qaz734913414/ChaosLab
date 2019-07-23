@@ -114,6 +114,12 @@
     <ClInclude Include="include\highgui\scatter.hpp">
       <Filter>Header Files\highgui</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\version.hpp">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\core.cpp">
@@ -170,5 +176,10 @@
     <ClCompile Include="src\highgui\scatter.cpp">
       <Filter>Source Files\highgui</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ChaosCV.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

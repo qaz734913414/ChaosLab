@@ -105,6 +105,7 @@ namespace chaos
 	/// <summary>Remove all space and line break</summary>
 	CHAOS_API std::string Shrink(const std::string& data);
 
+	CHAOS_API std::string GetVersionInfo();
 	void SetConsoleTextColor(unsigned short color);
 
 	constexpr size_t prime = 0x100000001B3ull;

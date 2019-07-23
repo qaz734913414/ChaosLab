@@ -6,11 +6,6 @@
 #define CHAOS_API __declspec(dllimport)
 #endif
 
-#define MAJOR_VERSION 1
-#define MINOR_VERSION 0
-#define REVISION 0
-#define BUILD 0
-
 namespace chaos
 {
 	enum LogSeverity
