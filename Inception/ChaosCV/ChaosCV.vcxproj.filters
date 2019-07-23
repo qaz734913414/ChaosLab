@@ -43,6 +43,12 @@
     <Filter Include="Source Files\face">
       <UniqueIdentifier>{035b237a-6659-429a-b2b9-4624a6961ca9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\highgui">
+      <UniqueIdentifier>{16b42ba8-8bd1-47c2-a50c-1507beafa91c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\highgui">
+      <UniqueIdentifier>{b7ba12d7-c41e-4e55-957a-9598dd6888ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\chaoscv.hpp">
@@ -99,6 +105,15 @@
     <ClInclude Include="include\face\aligner.hpp">
       <Filter>Header Files\face</Filter>
     </ClInclude>
+    <ClInclude Include="include\highgui\highgui.hpp">
+      <Filter>Header Files\highgui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\highgui\plot.hpp">
+      <Filter>Header Files\highgui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\highgui\scatter.hpp">
+      <Filter>Header Files\highgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\core.cpp">
@@ -145,6 +160,15 @@
     </ClCompile>
     <ClCompile Include="src\face\l5_aligner.cpp">
       <Filter>Source Files\face</Filter>
+    </ClCompile>
+    <ClCompile Include="src\highgui\highgui.cpp">
+      <Filter>Source Files\highgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\highgui\plot.cpp">
+      <Filter>Source Files\highgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\highgui\scatter.cpp">
+      <Filter>Source Files\highgui</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
