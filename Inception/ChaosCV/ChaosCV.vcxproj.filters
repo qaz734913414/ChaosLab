@@ -135,6 +135,9 @@
     <ClInclude Include="include\test\cumulative.hpp">
       <Filter>Header Files\test</Filter>
     </ClInclude>
+    <ClInclude Include="include\test\test_engine.hpp">
+      <Filter>Header Files\test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\core.cpp">
@@ -195,6 +198,9 @@
       <Filter>Source Files\test</Filter>
     </ClCompile>
     <ClCompile Include="src\test\cumulative.cpp">
+      <Filter>Source Files\test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test\test_data.cpp">
       <Filter>Source Files\test</Filter>
     </ClCompile>
   </ItemGroup>

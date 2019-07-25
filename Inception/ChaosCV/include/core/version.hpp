@@ -3,7 +3,7 @@
 #define MAJOR_VERSION 1
 #define MINOR_VERSION 0
 #define REVISION 0
-#define BUILD 10 
+#define BUILD 34 
 
 #define _T(val) #val
 #define __T(val) _T(val)

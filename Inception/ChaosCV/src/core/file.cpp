@@ -131,8 +131,7 @@ namespace chaos
 				if (force) CHECK_EQ(0, _mkdir(path.c_str()));
 			}
 		}
-		CHECK_EQ(0, CopyFile(std::string(from).c_str(), std::string(to).c_str(), false)) 
-			<< "Can not copy file " << from << " to " << to;
+		CopyFile(std::string(from).c_str(), std::string(to).c_str(), false);
 	}
 	void Move(const File& from, const File& to, bool force)
 	{
@@ -146,12 +145,11 @@ namespace chaos
 				if (force) CHECK_EQ(0, _mkdir(path.c_str()));
 			}
 		}
-		CHECK_EQ(0, MoveFile(std::string(from).c_str(), std::string(to).c_str()))
-			<< "Can not move file " << from << " to " << to;
+		MoveFile(std::string(from).c_str(), std::string(to).c_str());
 	}
 	void Delete(const File& file)
 	{
-		CHECK(DeleteFile(std::string(file).c_str())) << "Can not delete file " << file;
+		DeleteFile(std::string(file).c_str());
 	}
 }
 

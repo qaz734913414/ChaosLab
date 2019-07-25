@@ -184,6 +184,7 @@
     <ClInclude Include="include\test\confusion.hpp" />
     <ClInclude Include="include\test\cumulative.hpp" />
     <ClInclude Include="include\test\test_data.hpp" />
+    <ClInclude Include="include\test\test_engine.hpp" />
     <ClInclude Include="include\utils\json.hpp" />
     <ClInclude Include="include\utils\numpy.hpp" />
     <ClInclude Include="include\utils\utils.hpp" />
@@ -207,6 +208,7 @@
     <ClCompile Include="src\highgui\scatter.cpp" />
     <ClCompile Include="src\test\confusion.cpp" />
     <ClCompile Include="src\test\cumulative.cpp" />
+    <ClCompile Include="src\test\test_data.cpp" />
     <ClCompile Include="src\utils\json.cpp" />
     <ClCompile Include="src\utils\numpy.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />
