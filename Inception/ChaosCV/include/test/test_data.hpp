@@ -7,6 +7,7 @@ namespace chaos
 {
 	namespace test
 	{
+		/// <summary>Classification Label</summary>
 		class CHAOS_API CLabel
 		{
 		public:
@@ -21,11 +22,15 @@ namespace chaos
 
 			CLabel();
 			CLabel(const LabelData& data);
+			CLabel(const std::string& buff);
+
 			LabelData& operator<<(const int& value);
+			int operator[](int i) const;
 
 			LabelData data;
 		};
 
+		/// <summary>Detection Label</summary>
 		class CHAOS_API DLabel
 		{
 		public:
@@ -49,7 +54,9 @@ namespace chaos
 
 			DLabel();
 			DLabel(const LabelData& data);
+			DLabel(const std::string& buff);
 			LabelData& operator<<(const Value& value);
+			Value operator[](int i) const;
 
 			LabelData data;
 		};
@@ -60,7 +67,7 @@ namespace chaos
 			return DLabel::Value(idx, rect);
 		}
 
-
+		/// <summary>Test Label</summary>
 		class CHAOS_API Label
 		{
 		public:
@@ -79,46 +86,76 @@ namespace chaos
 			Label(const DLabel::LabelData& label_data);
 
 			Label(const std::string& buff);
-			operator std::string() const;
-		public:
+			//operator std::string() const;
+
+			std::string ToString() const;
+
+			template<class _Tp>
+			_Tp CastTo()
+			{
+				switch (type)
+				{
+				case CLABEL:
+					CHECK_EQ(typeid(_Tp), typeid(CLabel)) << "Can not cast CLabel to " << typeid(_Tp).name();
+					break;
+				case DLABEL:
+					CHECK_EQ(typeid(_Tp), typeid(DLabel)) << "Can not cast DLabel to " << typeid(_Tp).name();
+					break;
+				default:
+					LOG(FATAL);
+					return _Tp(); // Never reachable
+				}
+
+				return data;
+			}
+
+			bool Empty() const;
+		private:
 			std::string data;
 			Type type;
 		};
 
+
+		/// <summary>Test Sample</summary>
 		class CHAOS_API Sample
 		{
 		public:
 			enum Type
 			{
-				FILE,
-				DATA,
+				FILE, /// Image file
+				DATA, /// Mat data
 			};
 
 			Sample();
-			Sample(const File& file);
-			Sample(const Mat& data);
+			Sample(const FileList& group);
+			Sample(const std::vector<Mat>& group);
 
-			operator std::string() const;
-			bool IsData() const;
+			Sample(const std::string& buff);
+			//operator std::string() const;
+
+			std::string ToString() const;
+
+			std::vector<Mat> GetData() const;
+
+			bool Empty() const;
 		private:
-			Mat data;
+			std::string data;
 			Type type;
 		};
-
+		
 
 
 		class CHAOS_API TestData
 		{
 		public:
 			TestData();
-			TestData(const Label& label, const Sample& sample);
+			TestData(const std::string& key, const Sample& sample, const Label& label);
+			bool Empty() const;
 
-		private:
+			std::string key;
 			Sample sample;
 			Label label;
 		};
-
-
 
 
 
@@ -126,7 +163,8 @@ namespace chaos
 		{
 		public:
 			virtual void Close() = 0;
-			virtual size_t Size() = 0;
+			virtual size_t Size() const = 0;
+			virtual std::string Name() const = 0;
 		};
 
 		class CHAOS_API DataWriter : public Database
@@ -134,8 +172,8 @@ namespace chaos
 		public:
 			virtual ~DataWriter() {}
 
-			
-			//virtual void Put(const Sample& sample, const Label& label) = 0;
+			virtual void Put(const Sample& sample, const Label& label) = 0;
+
 			static Ptr<DataWriter> Create(const std::string& db);
 		};
 
@@ -144,7 +182,9 @@ namespace chaos
 		public:
 			virtual ~DataLoader() {}
 			
-			//virtual TestData Next() = 0;
+			virtual TestData Get(const std::string& key) = 0;
+			virtual TestData Next() = 0;
+			virtual void Reset() = 0;
 
 			static Ptr<DataLoader> Load(const std::string& db);
 		};

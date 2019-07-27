@@ -11,9 +11,9 @@ namespace chaos
 			table = Mat::zeros(1, noc, CV_32FC1);
 		}
 
-		void CumulativeTabel::Apply(int actual_id, const std::vector<float>& prob)
+		void CumulativeTabel::Apply(int actual_id, const std::vector<double>& prob)
 		{
-			std::multimap<float, int> sorted;
+			std::multimap<double, int> sorted;
 			for (int i = 0; i < (int)prob.size(); i++)
 			{
 				sorted.insert(std::make_pair(prob[i], i));

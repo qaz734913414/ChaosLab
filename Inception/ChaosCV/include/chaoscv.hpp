@@ -17,9 +17,9 @@
 #include "highgui/plot.hpp"
 #include "highgui/scatter.hpp"
 
-#include "test/test_data.hpp"
 #include "test/confusion.hpp"
 #include "test/cumulative.hpp"
+#include "test/test_data.hpp"
 #include "test/test_engine.hpp"
 
 #include "utils/utils.hpp"

@@ -203,6 +203,9 @@
     <ClCompile Include="src\test\test_data.cpp">
       <Filter>Source Files\test</Filter>
     </ClCompile>
+    <ClCompile Include="src\test\identification.cpp">
+      <Filter>Source Files\test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ChaosCV.rc">

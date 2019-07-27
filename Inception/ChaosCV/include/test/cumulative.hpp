@@ -12,7 +12,7 @@ namespace chaos
 			CumulativeTabel();
 			CumulativeTabel(int noc);
 
-			void Apply(int actual_id, const std::vector<float>& prob);
+			void Apply(int actual_id, const std::vector<double>& prob);
 
 			Mat GetPrecision() const;
 
