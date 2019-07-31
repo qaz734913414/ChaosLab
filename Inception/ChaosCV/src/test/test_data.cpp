@@ -17,9 +17,10 @@ namespace chaos
 		CLabel::CLabel(const CLabel::LabelData& data) : data(data) {}
 		CLabel::CLabel(const std::string& buff)
 		{
-			size_t cnt = *(size_t*)buff.data();
-			auto values = (int*)(buff.data() + sizeof(size_t));
-			for (int i = 0; i < cnt; i++)
+			//size_t cnt = *(size_t*)buff.data();
+			size_t cnt = buff.size() / sizeof(int);
+			auto values = (int*)buff.data();
+			for (size_t i = 0; i < cnt; i++)
 			{
 				data.values.push_back(values[i]);
 			}
@@ -43,9 +44,10 @@ namespace chaos
 		DLabel::DLabel(const DLabel::LabelData& data) : data(data) {}
 		DLabel::DLabel(const std::string& buff)
 		{
-			size_t cnt = *(size_t*)buff.data();
-			auto values = (Value*)(buff.data() + sizeof(size_t));
-			for (int i = 0; i < cnt; i++)
+			//size_t cnt = *(size_t*)buff.data();
+			size_t cnt = buff.size() / sizeof(Value);
+			auto values = (Value*)buff.data();
+			for (size_t i = 0; i < cnt; i++)
 			{
 				data.values.push_back(values[i]);
 			}
@@ -66,23 +68,23 @@ namespace chaos
 		Label::Label(const CLabel& label) : type(CLABEL)
 		{
 			size_t size = label.data.values.size();
-			data = std::string((char*)label.data.values.data(), size * sizeof(int));
+			data += std::string((char*)label.data.values.data(), size * sizeof(int));
 		}
 		Label::Label(const CLabel::LabelData& label_data) : type(CLABEL)
 		{
 			size_t size = label_data.values.size();
-			data = std::string((char*)label_data.values.data(), size * sizeof(int));
+			data += std::string((char*)label_data.values.data(), size * sizeof(int));
 		}
 
 		Label::Label(const DLabel& label) : type(DLABEL)
 		{
 			size_t size = label.data.values.size();
-			data = std::string((char*)label.data.values.data(), size * sizeof(DLabel::Value));
+			data += std::string((char*)label.data.values.data(), size * sizeof(DLabel::Value));
 		}
 		Label::Label(const DLabel::LabelData& label_data) : type(DLABEL)
 		{
 			size_t size = label_data.values.size();
-			data = std::string((char*)label_data.values.data(), size * sizeof(DLabel::Value));
+			data += std::string((char*)label_data.values.data(), size * sizeof(DLabel::Value));
 		}
 
 		Label::Label(const std::string& buff)
@@ -153,7 +155,7 @@ namespace chaos
 		std::string Sample::ToString() const
 		{
 			std::string buff;
-			buff += std::string((char*)& type, sizeof(Type));
+			buff += std::string((char*)&type, sizeof(Type));
 			buff += data;
 			return buff;
 		}
@@ -352,6 +354,9 @@ namespace chaos
 					Label label = iters[1]->value().ToString();
 
 					data = TestData(key, sample, label);
+
+					iters[0]->Next();
+					iters[1]->Next();
 				}
 				return data;
 			}

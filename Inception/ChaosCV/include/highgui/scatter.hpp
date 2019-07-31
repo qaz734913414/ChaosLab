@@ -30,7 +30,7 @@ namespace chaos
 	{
 		auto aux = ScatterFigure::Figure();
 		aux->Scatter(points, args...);
-		aux->Set("XRange", x_range, "YRange", y_range, "Loose", 0);
+		aux->Set("XRange", x_range, "YRange", y_range, "Loose", 0.);
 
 		aux->DrawOn(figure); 
 	}

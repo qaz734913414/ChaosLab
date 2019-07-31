@@ -75,6 +75,10 @@ namespace chaos
 			stream << shape[Size() - 1] << ")";
 			return stream.str();
 		}
+		const int* Shape::data() const
+		{
+			return shape.data();
+		}
 		std::vector<int>::const_iterator Shape::begin() const
 		{
 			return shape.begin();

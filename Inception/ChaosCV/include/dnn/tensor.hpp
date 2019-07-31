@@ -54,6 +54,8 @@ namespace chaos
 
 			std::string ToString() const;
 
+
+			const int* data() const;
 			std::vector<int>::const_iterator begin() const;
 			std::vector<int>::iterator begin();
 			std::vector<int>::const_iterator end() const;

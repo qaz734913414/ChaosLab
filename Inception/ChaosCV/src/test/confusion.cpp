@@ -156,51 +156,118 @@ namespace chaos
 
 
 
-		double GetMAP(const std::vector<ConfusionTable>& tables)
+		double GetMAP(const std::vector<ConfusionTable>& tables, const std::set<int>& idx)
 		{
-			double mAP = 0;
-			for (auto confusion : tables)
+			std::set<int> index = idx;
+			if (index.empty())
 			{
-				mAP += confusion.AP;
+				for (int i = 0; i < (int)tables.size(); i++) index.insert(i);
 			}
-			return mAP / tables.size();
+
+			double mAP = 0;
+			for (auto i : index)
+			{
+				mAP += tables[i].AP;
+			}
+			return mAP / index.size();
 		}
 
-		Mat GetTPR(const std::vector<ConfusionTable>& tables)
+		double GetAUC(const std::vector<ConfusionTable>& tables, const std::set<int>& idx)
 		{
+			std::set<int> index = idx;
+			if (index.empty())
+			{
+				for (int i = 0; i < (int)tables.size(); i++) index.insert(i);
+			}
+
+			double auc = 0;
+			for (auto i : index)
+			{
+				auc += tables[i].AUC;
+			}
+			return auc / index.size();
+		}
+
+		Mat GetFScore(const std::vector<ConfusionTable>& tables, double beta, const std::set<int> & idx)
+		{
+			std::set<int> index = idx;
+			if (index.empty())
+			{
+				for (int i = 0; i < (int)tables.size(); i++) index.insert(i);
+			}
+
+			Mat FScore = Mat::zeros(tables[0].TPR.size(), tables[0].TPR.type());
+			for (auto i : index)
+			{
+				auto local = tables[i].GetFScore(beta);
+				cv::add(FScore, local, FScore, local == local);
+			}
+			return FScore / (double)index.size();
+		}
+
+		Mat GetTPR(const std::vector<ConfusionTable>& tables, const std::set<int>& idx)
+		{
+			std::set<int> index = idx;
+			if (index.empty())
+			{
+				for (int i = 0; i < (int)tables.size(); i++) index.insert(i);
+			}
+
 			Mat TPR = Mat::zeros(tables[0].TPR.size(), tables[0].TPR.type());
-			for (auto confusion : tables)
+			for (auto i : index)
 			{
-				TPR += confusion.TPR;
+				auto local = tables[i].TPR;
+				cv::add(TPR, local, TPR, local == local);
 			}
-			return TPR / (double)tables.size();
+			return TPR / (double)index.size();
 		}
-		Mat GetFPR(const std::vector<ConfusionTable>& tables)
+		Mat GetFPR(const std::vector<ConfusionTable>& tables, const std::set<int>& idx)
 		{
+			std::set<int> index = idx;
+			if (index.empty())
+			{
+				for (int i = 0; i < (int)tables.size(); i++) index.insert(i);
+			}
+
 			Mat FPR = Mat::zeros(tables[0].FPR.size(), tables[0].FPR.type());
-			for (auto confusion : tables)
+			for (auto i : index)
 			{
-				FPR += confusion.FPR;
+				auto local = tables[i].FPR;
+				cv::add(FPR, local, FPR, local == local);
 			}
-			return FPR / (double)tables.size();
+			return FPR / (double)index.size();
 		}
-		Mat GetPPV(const std::vector<ConfusionTable>& tables)
+		Mat GetPPV(const std::vector<ConfusionTable>& tables, const std::set<int>& idx)
 		{
+			std::set<int> index = idx;
+			if (index.empty())
+			{
+				for (int i = 0; i < (int)tables.size(); i++) index.insert(i);
+			}
+
 			Mat PPV = Mat::zeros(tables[0].PPV.size(), tables[0].PPV.type());
-			for (auto& confusion : tables)
+			for (auto i : index)
 			{
-				PPV += confusion.PPV;
+				auto local = tables[i].PPV;
+				cv::add(PPV, local, PPV, local == local);
 			}
-			return PPV / (double)tables.size();
+			return PPV / (double)index.size();
 		}
-		Mat GetNPV(const std::vector<ConfusionTable>& tables)
+		Mat GetNPV(const std::vector<ConfusionTable>& tables, const std::set<int>& idx)
 		{
-			Mat NPV = Mat::zeros(tables[0].NPV.size(), tables[0].NPV.type());
-			for (auto confusion : tables)
+			std::set<int> index = idx;
+			if (index.empty())
 			{
-				NPV += confusion.NPV;
+				for (int i = 0; i < (int)tables.size(); i++) index.insert(i);
 			}
-			return NPV / (double)tables.size();
+
+			Mat NPV = Mat::zeros(tables[0].NPV.size(), tables[0].NPV.type());
+			for (auto i : index)
+			{
+				auto local = tables[i].NPV;
+				cv::add(NPV, local, NPV, local == local);
+			}
+			return NPV / (double)index.size();
 		}
 
 	}

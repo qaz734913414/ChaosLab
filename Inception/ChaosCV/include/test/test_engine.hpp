@@ -4,6 +4,9 @@
 #include "test/confusion.hpp"
 #include "test/cumulative.hpp"
 
+#include "highgui/highgui.hpp"
+#include "highgui/plot.hpp"
+
 namespace chaos
 {
 	namespace test
@@ -19,6 +22,8 @@ namespace chaos
 			__declspec(property(put = SetForward)) std::function<Mat(const Mat&)> Forward;
 		protected:
 			std::function<Mat(const Mat&)> forward;
+
+			std::string folder;
 		};
 
 		/// <summary>
@@ -32,16 +37,39 @@ namespace chaos
 
 			void SetGallery(const Ptr<DataLoader>& loader);
 			void SetGenuine(const Ptr<DataLoader>& loader);
-
 			void SetMeasure(const std::function<double(const Mat&, const Mat&)>& func);
 
 			__declspec(property(put = SetGallery)) Ptr<DataLoader> Gallery;
 			__declspec(property(put = SetGenuine)) Ptr<DataLoader> Genuine;
 			__declspec(property(put = SetMeasure)) std::function<double(const Mat&, const Mat&)> Measure;
 
+			
+
+			CumulativeTabel GetCumulative() const;
+			ConfusionMat GetConfusion() const;
+			ConfusionTable GetGlobalConfusion() const;
+			std::vector<ConfusionTable> GetLocalConfusions() const;
+
+			__declspec(property(get = GetCumulative)) CumulativeTabel Cumulative;
+			__declspec(property(get = GetConfusion)) ConfusionMat Confusion;
+			__declspec(property(get = GetGlobalConfusion)) ConfusionTable GlobalConfusion;
+			__declspec(property(get = GetLocalConfusions)) std::vector<ConfusionTable> LocalConfusions;
+
+			virtual Ptr<PlotFigure> PlotROC(bool show = true) = 0;
+			virtual Ptr<PlotFigure> PlotCMC(bool show = true) = 0;
+			virtual Ptr<PlotFigure> PlotPRC(bool show = true) = 0;
+
+			virtual std::set<int> GetGenuineLabels() const = 0;
+
 			static Ptr<ITest> Create(const std::string& db);
 			static Ptr<ITest> Load(const std::string& db);
 		protected:
+			enum
+			{
+				GALLERY = 0,
+				GENUINE = 1,
+			};
+
 			Ptr<DataLoader> gallery;
 			Ptr<DataLoader> genuine;
 
