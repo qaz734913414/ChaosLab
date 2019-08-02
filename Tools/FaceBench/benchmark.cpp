@@ -12,14 +12,14 @@ DEFINE_BOOL(version, "", "Show version");
 
 DEFINE_STRING(symbol, "", "Deep Learning", "Symbol file for face feature model");
 DEFINE_STRING(weight, "", "Deep Learning", "Weight file for face feature model");
-DEFINE_STRING(layer_name, "Deep Learning", "Deep Learning", "Output layer name");
+DEFINE_STRING(layer_name, "fc1_output", "Deep Learning", "Output layer name");
 DEFINE_INT(device_id, 0, "Deep Learning", "Device ID");
 DEFINE_BOOL(use_gpu, "Deep Learning", "Use GPU if true");
 
 DEFINE_STRING(mtcnn, "", "Face", "MTCNN model folder");
 DEFINE_INT(height, 112, "Face", "Input height for face model");
 DEFINE_INT(width, 112, "Face", "Input width for face model");
-DEFINE_FLOAT(pad, 0.f, "Face", "Padding for aligner");
+DEFINE_FLOAT(pad, 0, "Face", "Padding for aligner");
 
 
 using namespace chaos;
@@ -95,17 +95,20 @@ void CreateDB()
 		if (flag_shuffle) std::shuffle(g.second.begin(), g.second.end(), std::default_random_engine(seed));
 
 		Label label = (CLabel() << idx++);
-		Sample sample = { g.second[0] };
+		Sample sample = FileList{ g.second[0] };
 		gallery->Put(sample, label);
 
 		for (int i = 1; i < g.second.size(); i++)
 		{
-			Sample sample = { g.second[i] };
+			Sample sample = FileList{ g.second[i] };
 			genuine->Put(sample, label);
 		}
 		ProgressBar::Update();
 	}
 	ProgressBar::Halt();
+
+	gallery->Close();
+	genuine->Close();
 }
 REGISTERFUNC(CreateDB);
 
@@ -152,8 +155,8 @@ void Test()
 	net->BindExecutor({ {"data", {1, 3, flag_height, flag_width}} });
 
 	auto engine = ITest::Create(flag_database);
-	engine->Gallery = DataLoader::Load(flag_genuine);
-	engine->Genuine = DataLoader::Load(flag_gallery);
+	engine->Gallery = DataLoader::Load(flag_gallery);
+	engine->Genuine = DataLoader::Load(flag_genuine);
 
 	engine->Forward = [=](const Mat& image)->Mat {
 		Mat data;
@@ -169,10 +172,11 @@ void Test()
 
 	engine->Run();
 	engine->Report();
+	engine->Save();
 	engine->Close();
 }
 REGISTERFUNC(Test);
-
+ 
 int main(int argc, char** argv)
 {
 	SetUsageMessage(

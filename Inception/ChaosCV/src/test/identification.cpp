@@ -143,8 +143,6 @@ namespace chaos
 					RunForward(genuine, GENUINE, true);
 
 					Identify();
-
-					Save();
 				}
 				else
 				{
@@ -205,7 +203,7 @@ namespace chaos
 					<< "Optimal Threshold based on PR Curve: " << ths.at<float>(th_base_pr_idx) << std::endl
 					<< "Max F1 Score: " << max_f1_score << std::endl
 					<< "Optimal Threshold based on F1 Score: " << ths.at<float>(max_f1_idx) << std::endl
-					<< "Table of FPR|TPR@TH(Micro):" << std::endl << table.str();
+					<< "Table of FPR|TPR@TH:" << std::endl << table.str();
 
 				report << "# Test Report" << std::endl
 					<< "## Database Infos" << std::endl
@@ -233,6 +231,56 @@ namespace chaos
 					<< "![ROC Curve](roc.png)" << std::endl
 					<< "#### PR Cruve" << std::endl
 					<< "![PR Curve](prc.png)" << std::endl;
+			}
+
+			void Save()
+			{
+				// Save Mat Data
+				{
+					cv::FileStorage fs(folder + "\\data.xml", cv::FileStorage::WRITE);
+					fs << "CUMU" << cumulative;
+					fs << "CMat" << confusion;
+					fs << "GTable" << global_confusion;
+					fs << "NOC" << (int)noc;
+					for (int i = 0; i < noc; i++)
+					{
+						fs << "LTable_" + std::to_string(i) << local_confusions[i];
+					}
+				}
+
+				// To save Thumbnail images
+				{
+					auto cmc = PlotCMC(false)->Draw(); cv::resize(cmc, cmc, cv::Size(), 0.6, 0.6);
+					auto roc = PlotROC(false)->Draw(); cv::resize(roc, roc, cv::Size(), 0.6, 0.6);
+					auto prc = PlotPRC(false)->Draw(); cv::resize(prc, prc, cv::Size(), 0.6, 0.6);
+
+					cv::imwrite(folder + "\\cmc.png", cmc);
+					cv::imwrite(folder + "\\roc.png", roc);
+					cv::imwrite(folder + "\\prc.png", prc);
+				}
+
+				// Save Reports
+				{
+					std::fstream fs(folder + "\\report.md", std::ios::out);
+					fs << report.str() << std::endl;
+					fs << "---" << std::endl;
+					fs << "Powered by " << GetVersionInfo();
+					fs.close();
+				}
+
+				status = database->Put(rocksdb::WriteOptions(), "NOC", std::to_string(noc));
+				CHECK(status.ok()) << status.ToString();
+
+				std::vector<int> valid_idx;
+				for (auto label : genuine_label) valid_idx.push_back(label);
+				status = database->Put(rocksdb::WriteOptions(), "Genuine Label", std::string((char*)valid_idx.data(), sizeof(int) * valid_idx.size()));
+				CHECK(status.ok()) << status.ToString();
+
+				status = database->Put(rocksdb::WriteOptions(), "Valid Size", std::string((char*)valid_size, sizeof(int) * 2));
+				CHECK(status.ok()) << status.ToString();
+
+				status = database->Put(rocksdb::WriteOptions(), "During", std::to_string(during));
+				CHECK(status.ok()) << status.ToString();
 			}
 
 			Ptr<PlotFigure> PlotROC(bool show) final
@@ -318,8 +366,6 @@ namespace chaos
 				ProgressBar::Render("Forwarding " + loader->Name(), loader->Size());
 				while (!(data = loader->Next()).Empty())
 				{
-					CHECK_EQ(Sample::FILE, data.sample.GetType()) << "Just support testing from file";
-
 					int64 tick = cv::getTickCount();
 					Mat feat = forward(data.sample.GetData()[0]);
 					during += (cv::getTickCount() - tick);
@@ -399,55 +445,7 @@ namespace chaos
 				}
 			}
 
-			void Save()
-			{
-				// Save Mat Data
-				{
-					cv::FileStorage fs(folder + "\\data.xml", cv::FileStorage::WRITE);
-					fs << "CUMU" << cumulative;
-					fs << "CMat" << confusion;
-					fs << "GTable" << global_confusion;
-					fs << "NOC" << (int)noc;
-					for (int i = 0; i < noc; i++)
-					{
-						fs << "LTable_" + std::to_string(i) << local_confusions[i];
-					}
-				}
-
-				// To save Thumbnail images
-				{
-					auto cmc = PlotCMC(false)->Draw(); cv::resize(cmc, cmc, cv::Size(), 0.6, 0.6);
-					auto roc = PlotROC(false)->Draw(); cv::resize(roc, roc, cv::Size(), 0.6, 0.6);
-					auto prc = PlotPRC(false)->Draw(); cv::resize(prc, prc, cv::Size(), 0.6, 0.6);
-
-					cv::imwrite(folder + "\\cmc.png", cmc);
-					cv::imwrite(folder + "\\roc.png", roc);
-					cv::imwrite(folder + "\\prc.png", prc);
-				}
-
-				// Save Reports
-				{
-					std::fstream fs(folder + "\\report.md", std::ios::out);
-					fs << report.str() << std::endl;
-					fs << "---" << std::endl;
-					fs << "Powered by " <<  GetVersionInfo();
-					fs.close();
-				}
-
-				status = database->Put(rocksdb::WriteOptions(), "NOC", std::to_string(noc));
-				CHECK(status.ok()) << status.ToString();
-
-				std::vector<int> valid_idx;
-				for (auto label : genuine_label) valid_idx.push_back(label);
-				status = database->Put(rocksdb::WriteOptions(), "Genuine Label", std::string((char*)valid_idx.data(), sizeof(int) * valid_idx.size()));
-				CHECK(status.ok()) << status.ToString();
-
-				status = database->Put(rocksdb::WriteOptions(), "Valid Size", std::string((char*)valid_size, sizeof(int) * 2));
-				CHECK(status.ok()) << status.ToString();
-
-				status = database->Put(rocksdb::WriteOptions(), "During", std::to_string(during));
-				CHECK(status.ok()) << status.ToString();
-			}
+			
 
 			void Mapping2LogSpace(Mat& FPR, Mat& TPR)
 			{

@@ -136,7 +136,6 @@ namespace chaos
 			std::string ToString() const;
 
 			std::vector<Mat> GetData() const;
-			Type GetType() const;
 
 			bool Empty() const;
 		private:

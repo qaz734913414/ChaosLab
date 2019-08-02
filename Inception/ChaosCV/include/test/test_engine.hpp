@@ -16,6 +16,7 @@ namespace chaos
 		public:
 			virtual void Run() = 0;
 			virtual void Report() = 0;
+			virtual void Save() = 0;
 			virtual void Close() = 0;
 
 			void SetForward(const std::function<Mat(const Mat&)>& func) { forward = func; }
@@ -43,7 +44,6 @@ namespace chaos
 			__declspec(property(put = SetGenuine)) Ptr<DataLoader> Genuine;
 			__declspec(property(put = SetMeasure)) std::function<double(const Mat&, const Mat&)> Measure;
 
-			
 
 			CumulativeTabel GetCumulative() const;
 			ConfusionMat GetConfusion() const;

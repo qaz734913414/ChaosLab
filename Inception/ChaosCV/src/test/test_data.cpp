@@ -200,10 +200,6 @@ namespace chaos
 
 			return group;
 		}
-		Sample::Type Sample::GetType() const
-		{
-			return type;
-		}
 		bool Sample::Empty() const
 		{
 			return data.empty();
@@ -258,10 +254,10 @@ namespace chaos
 
 			void Close() final
 			{
+				if (!database) return;
+
 				status = database->Put(rocksdb::WriteOptions(), "Size", std::to_string(size));
 				CHECK(status.ok()) << status.ToString();
-
-				if (!database) return;
 
 				for (auto& handle : handles)
 				{
