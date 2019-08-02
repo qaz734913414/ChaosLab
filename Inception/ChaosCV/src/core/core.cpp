@@ -140,7 +140,7 @@ namespace chaos
 std::string chaos::GetVersionInfo()
 {
 	std::stringstream ss;
-	ss << "ChaosCV " << RELEASE_VER_STR << " [MSC v." << _MSC_VER << " " << __T(_MSC_PLATFORM_TARGET) << "bit]";
+	ss << "ChaosCV " << RELEASE_VER_STR << " [MSC v." << _MSC_VER << " " << __T(_MSC_PLATFORM_TARGET) << " bit]";
 	return ss.str();
 }
 

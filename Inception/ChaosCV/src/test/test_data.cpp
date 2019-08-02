@@ -200,6 +200,10 @@ namespace chaos
 
 			return group;
 		}
+		Sample::Type Sample::GetType() const
+		{
+			return type;
+		}
 		bool Sample::Empty() const
 		{
 			return data.empty();

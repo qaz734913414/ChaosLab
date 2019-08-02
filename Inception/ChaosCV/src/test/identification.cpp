@@ -148,7 +148,7 @@ namespace chaos
 				}
 				else
 				{
-					LOG(ERROR) << "Just can show report this test database";
+					LOG(FATAL) << "Just can show report this test database";
 				}
 			}
 			void Report() final
@@ -318,6 +318,8 @@ namespace chaos
 				ProgressBar::Render("Forwarding " + loader->Name(), loader->Size());
 				while (!(data = loader->Next()).Empty())
 				{
+					CHECK_EQ(Sample::FILE, data.sample.GetType()) << "Just support testing from file";
+
 					int64 tick = cv::getTickCount();
 					Mat feat = forward(data.sample.GetData()[0]);
 					during += (cv::getTickCount() - tick);
@@ -399,12 +401,6 @@ namespace chaos
 
 			void Save()
 			{
-				if (!can_run)
-				{
-					LOG(ERROR) << "Just can show report this test database";
-					return;
-				}
-
 				// Save Mat Data
 				{
 					cv::FileStorage fs(folder + "\\data.xml", cv::FileStorage::WRITE);

@@ -19,6 +19,6 @@ namespace chaos
 			Landmark points = Landmark();
 		};
 
-		void Sort(const Rect& center, std::vector<FaceInfo>& infos);
+		CHAOS_API void Sort(const Rect& center, std::vector<FaceInfo>& infos);
 	}
 }

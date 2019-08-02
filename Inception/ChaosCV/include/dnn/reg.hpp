@@ -33,7 +33,7 @@ namespace chaos
 /// </summary>
 #define REGISTER_FRAMEWORK(name, stype, wtype, func)	\
   namespace _register_##name {							\
-    auto _##name = chaos::dnn::Register(#name)			\
+    static auto _##name = chaos::dnn::Register(#name)	\
       .With(##stype, ##wtype, func);					\
   }
 

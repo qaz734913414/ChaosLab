@@ -61,6 +61,8 @@ namespace chaos
 
 			virtual std::set<int> GetGenuineLabels() const = 0;
 
+			__declspec(property(get = GetGenuineLabels)) std::set<int> GenuineLabels;
+
 			static Ptr<ITest> Create(const std::string& db);
 			static Ptr<ITest> Load(const std::string& db);
 		protected:
