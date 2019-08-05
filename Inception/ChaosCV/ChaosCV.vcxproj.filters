@@ -138,6 +138,9 @@
     <ClInclude Include="include\test\test_engine.hpp">
       <Filter>Header Files\test</Filter>
     </ClInclude>
+    <ClInclude Include="include\utils\undigraph.hpp">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\core.cpp">
@@ -205,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="src\test\identification.cpp">
       <Filter>Source Files\test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\undigraph.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
