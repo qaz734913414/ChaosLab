@@ -5,6 +5,61 @@
 
 namespace chaos
 {
+	Shape::Shape() : shape(std::vector<int>()) {}
+
+	void Shape::Swap(Shape& _shape)
+	{
+		shape.swap(_shape.shape);
+	}
+	size_t Shape::Size() const { return shape.size(); }
+	const int& Shape::operator[](size_t idx) const { return shape[idx]; }
+	int& Shape::operator[](size_t idx) { return shape[idx]; }
+	inline std::ostream& operator<<(std::ostream& stream, const Shape& shape)
+	{
+		return stream << shape.ToString();
+	}
+	std::string Shape::ToString() const
+	{
+		std::stringstream stream;
+		stream << "(";
+		for (int i = 0; i < Size() - 1; i++)
+		{
+			stream << shape[i] << ", ";
+		}
+		stream << shape[Size() - 1] << ")";
+		return stream.str();
+	}
+	const int* Shape::data() const
+	{
+		return shape.data();
+	}
+	std::vector<int>::const_iterator Shape::begin() const
+	{
+		return shape.begin();
+	}
+	std::vector<int>::iterator Shape::begin()
+	{
+		return shape.begin();
+	}
+	std::vector<int>::const_iterator Shape::end() const
+	{
+		return shape.end();
+	}
+	std::vector<int>::iterator Shape::end()
+	{
+		return shape.end();
+	}
+	const int& Shape::back() const
+	{
+		return shape.back();
+	}
+	int& Shape::back()
+	{
+		return shape.back();
+	}
+
+
+
 	bool ProgressBar::running = false;
 	bool ProgressBar::stopped = true;
 	char* ProgressBar::progress = nullptr;

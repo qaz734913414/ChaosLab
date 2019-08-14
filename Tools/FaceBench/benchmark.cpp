@@ -158,7 +158,7 @@ void Test()
 	engine->Gallery = DataLoader::Load(flag_gallery);
 	engine->Genuine = DataLoader::Load(flag_genuine);
 
-	engine->Forward = [=](const Mat& image)->Mat {
+	engine->Forward = [=](const Mat& image)->Tensor {
 		Mat data;
 		image.convertTo(data, CV_32F);
 
@@ -167,7 +167,7 @@ void Test()
 		net->Forward();
 		net->GetLayerData(flag_layer_name, feat);
 
-		return Mat(feat.dims, feat.shape.data(), CV_32F, feat.data).clone();
+		return feat;
 	};
 
 	engine->Run();

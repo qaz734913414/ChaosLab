@@ -13,6 +13,7 @@ namespace chaos
 			virtual ~Detector() {}
 
 			virtual std::vector<FaceInfo> Detect(const Mat& image) = 0;
+			virtual void Detect(const Mat& image, FaceInfo& info) = 0;
 
 			/// <summary>
 			/// <para>Load Mutil-Task CNN models for face detection</para>

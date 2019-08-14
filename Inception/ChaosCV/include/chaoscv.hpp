@@ -25,4 +25,5 @@
 #include "utils/utils.hpp"
 #include "utils/numpy.hpp"
 #include "utils/json.hpp"
+#include "utils/fast_search.hpp"
 #include "utils/undigraph.hpp"

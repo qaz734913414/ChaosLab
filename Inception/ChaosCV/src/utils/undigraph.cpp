@@ -46,7 +46,7 @@ namespace chaos
 		std::vector<std::set<int>> group;
 		// First iteration
 		remain = ConnectNodesConstraint(group, remain, 0, max_size);
-		ProgressBar::Update(group.size());
+		ProgressBar::Update((int)group.size());
 		// Iteration
 		while (!remain.empty())
 		{

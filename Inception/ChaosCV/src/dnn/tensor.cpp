@@ -8,15 +8,25 @@ namespace chaos
 		{
 			switch (depth)
 			{
+			case F64:
+				return CV_64F;
 			case F32:
 				return CV_32F;
+			case S32:
+				return CV_32S;
 			case F16:
 				return CV_16F;
+			case S16:
+				return CV_16S;
+			case U16:
+				return CV_16U;
+			case S8:
+				return CV_8S;
 			case U8:
 				return CV_8U;
 			default:
-				LOG(FATAL) << "Unknown depth";
-				return -1;
+				LOG(FATAL) << "DO not support to Convert OpenCV Mat depth";
+				return -1; // Never Reachable
 			}
 		}
 
@@ -24,15 +34,25 @@ namespace chaos
 		{
 			switch (depth)
 			{
+			case CV_64F:
+				return F64;
+			case CV_32S:
+				return S32;
 			case CV_32F:
 				return F32;
+			case CV_16U:
+				return U16;
+			case CV_16S:
+				return S16;
 			case CV_16F:
 				return F16;
+			case CV_8S:
+				return S8;
 			case CV_8U:
 				return U8;
 			default:
 				LOG(FATAL) << "Unknown depth";
-				return UNK;
+				return U8; // Never Reachable
 			}
 		}
 
@@ -40,76 +60,34 @@ namespace chaos
 		{
 			switch (depth)
 			{
+			case F64:
+				return "float64";
+			case S64:
+				return "int64";
 			case F32:
 				return "float32";
+			case S32:
+				return "int32";
+			case S16:
+				return "int16";
+			case U16:
+				return "uint32";
 			case F16:
 				return "float16";
 			case U8:
 				return "uint8";
+			case S8:
+				return "int8";
 			default:
-				return "unknown";
+				LOG(FATAL) << "Unknown depth";
+				return "unknown"; // Never Reachable
 			}
 		}
 
-		Shape::Shape() : shape(std::vector<int>()) {}
-
-		void Shape::Swap(Shape& _shape)
-		{
-			shape.swap(_shape.shape);
-		}
-		size_t Shape::Size() const { return shape.size(); }
-		const int& Shape::operator[](size_t idx) const { return shape[idx]; }
-		int& Shape::operator[](size_t idx) { return shape[idx]; }
-		inline std::ostream& operator<<(std::ostream& stream, const Shape& shape)
-		{
-			return stream << shape.ToString();
-		}
-		std::string Shape::ToString() const
-		{
-			std::stringstream stream;
-			stream << "(";
-			for (int i = 0; i < Size() - 1; i++)
-			{
-				stream << shape[i] << ", ";
-			}
-			stream << shape[Size() - 1] << ")";
-			return stream.str();
-		}
-		const int* Shape::data() const
-		{
-			return shape.data();
-		}
-		std::vector<int>::const_iterator Shape::begin() const
-		{
-			return shape.begin();
-		}
-		std::vector<int>::iterator Shape::begin()
-		{
-			return shape.begin();
-		}
-		std::vector<int>::const_iterator Shape::end() const
-		{
-			return shape.end();
-		}
-		std::vector<int>::iterator Shape::end()
-		{
-			return shape.end();
-		}
-		const int& Shape::back() const
-		{
-			return shape.back();
-		}
-		int& Shape::back()
-		{
-			return shape.back();
-		}
 
 
 
-
-
-
-		Tensor::Tensor() : data(nullptr), ref_cnt(nullptr), allocator(nullptr), depth(UNK), shape(Shape()), cstep(0), dims(0), aligned(false) {}
+		Tensor::Tensor() : data(nullptr), ref_cnt(nullptr), allocator(nullptr), depth(U8), shape(Shape()), cstep(0), dims(0), aligned(false) {}
 
 		Tensor::Tensor(const Shape& shape, const Depth& depth, bool aligned, Allocator* allocator) : Tensor()
 		{
@@ -118,9 +96,9 @@ namespace chaos
 		Tensor::Tensor(const Shape& shape, const Depth& depth, void* data, bool aligned, Allocator* allocator) 
 			: data(data), ref_cnt(nullptr), aligned(aligned), shape(shape), dims(static_cast<int>(shape.Size())), depth(depth), allocator(allocator)
 		{
-			CHECK_NE(UNK, depth);
+			//CHECK_NE(UNK, depth);
 			cstep = dims >= 2 ? (size_t)shape[dims - 1LL] * shape[dims - 2LL] : shape[0];
-			if (aligned) cstep = AlignSize(cstep * depth, MALLOC_ALIGN) / depth;
+			if (aligned) cstep = AlignSize(cstep * (depth >> DEPTH_SHIFT), MALLOC_ALIGN) / (depth >> DEPTH_SHIFT);
 		}
 
 		Tensor::Tensor(const Tensor& t) 
@@ -198,7 +176,7 @@ namespace chaos
 				for (int i = 0; i < shape[1]; i++)
 				{
 					int idx = std::abs(c - i);
-					slice[idx] = cv::Mat(shape[2], shape[3], Cast(depth), (uchar*)data + ((size_t)shape[1] * n + i) * cstep * depth);
+					slice[idx] = cv::Mat(shape[2], shape[3], Cast(depth), (uchar*)data + ((size_t)shape[1] * n + i) * cstep * (depth >> DEPTH_SHIFT));
 				}
 				cv::merge(slice, packed);
 
@@ -208,13 +186,38 @@ namespace chaos
 			return _data;
 		}
 
+		Tensor::operator Mat() const
+		{
+			std::vector<size_t> steps;
+			switch (dims)
+			{
+			default:
+				for (int i = 1; i < dims - 2; i++)
+				{
+					size_t step = cstep * (depth >> DEPTH_SHIFT);
+					for (int j = 0; j < dims - 2; j++)
+					{
+						step *= shape[j];
+					}
+					steps.push_back(step);
+				}
+			case 3:
+				steps.push_back(cstep * (depth >> DEPTH_SHIFT));
+			case 2:
+				steps.push_back((size_t)shape.back() * (depth >> DEPTH_SHIFT));
+			case 1:
+				steps.push_back((depth >> DEPTH_SHIFT));
+			}
+			return Mat(dims, shape.data(), Cast(depth), data, steps.data());
+		}
+
 		void Tensor::Create(const Shape& _shape, const Depth& _depth, bool _aligned, Allocator* _allocator)
 		{
 			if (shape == _shape && depth == _depth && allocator == _allocator) return;
 
 			Release();
 
-			CHECK_NE(UNK, _depth);
+			//CHECK_NE(UNK, _depth);
 
 			shape = _shape;
 			depth = _depth;
@@ -224,11 +227,11 @@ namespace chaos
 			dims = static_cast<int>(shape.Size());
 
 			cstep = dims > 1 ? (size_t)shape[dims - 1LL] * shape[dims - 2LL] : shape[0];
-			if (aligned) cstep = AlignSize(cstep * depth, MALLOC_ALIGN) / depth;
+			if (aligned) cstep = AlignSize(cstep * (depth >> DEPTH_SHIFT), MALLOC_ALIGN) / (depth >> DEPTH_SHIFT);
 
 			if (Total() > 0)
 			{
-				size_t size = AlignSize(Total() * depth, 4);
+				size_t size = AlignSize(Total() * (depth >> DEPTH_SHIFT), 4);
 				if (allocator)
 					data = allocator->FastMalloc(size + sizeof(*ref_cnt));
 				else
@@ -250,7 +253,7 @@ namespace chaos
 			}
 
 			Shape().Swap(shape);
-			depth = UNK;
+			depth = U8;
 			dims = 0;
 			aligned = false;
 
@@ -258,7 +261,7 @@ namespace chaos
 			ref_cnt = nullptr;
 		}
 
-		Tensor Tensor::Flatten()
+		Tensor Tensor::Flatten() const
 		{
 			if (IsContinue())
 			{
@@ -270,9 +273,9 @@ namespace chaos
 				auto num = Total() / cstep;
 				for (int n = 0; n < num; n++)
 				{
-					const void* src = (unsigned char*)data + n * cstep * depth;
-					void* dst = (unsigned char*)flattened.data + n * flattened.cstep * flattened.depth;
-					memcpy(dst, src, flattened.cstep * flattened.depth);
+					const void* src = (unsigned char*)data + n * cstep * (depth >> DEPTH_SHIFT);
+					void* dst = (unsigned char*)flattened.data + n * flattened.cstep * (flattened.depth >> DEPTH_SHIFT);
+					memcpy(dst, src, flattened.cstep * (flattened.depth >> DEPTH_SHIFT));
 				}
 				return flattened;
 			}
@@ -291,12 +294,13 @@ namespace chaos
 
 			if (!aligned)
 			{
-				// Slow
+				//new_tensor = Tensor(new_shape, depth, data, aligned, allocator); //???À∆∫ı°£°£°£”–Œ Ã‚∞°°£°£
 				memcpy(new_tensor.data, data, Size() * depth); 
 			}
 			else
 			{
 				// Flatten
+				//new_tensor = Tensor(new_shape, depth, aligned, allocator);
 				Tensor flattened = Flatten();
 
 				// Copy to new shape
@@ -304,9 +308,9 @@ namespace chaos
 				auto csize = new_tensor.Size() / new_num;
 				for (int n = 0; n < new_num; n++)
 				{
-					const void* src = (unsigned char*)flattened.data + n * csize * flattened.depth;
-					void* dst = (unsigned char*)new_tensor.data + n * new_tensor.cstep * new_tensor.depth;
-					memcpy(dst, src, csize * new_tensor.depth);
+					const void* src = (unsigned char*)flattened.data + n * csize * (flattened.depth >> DEPTH_SHIFT);
+					void* dst = (unsigned char*)new_tensor.data + n * new_tensor.cstep * (new_tensor.depth >> DEPTH_SHIFT);
+					memcpy(dst, src, csize * (new_tensor.depth >> DEPTH_SHIFT));
 				}
 			}
 
@@ -353,7 +357,7 @@ namespace chaos
 				for (int i = 0; i < num; i++)
 				{
 					stream << Mat(h, w, Cast(tensor.depth), slice) << std::endl;
-					slice += tensor.cstep * tensor.depth;
+					slice += tensor.cstep * (tensor.depth >> DEPTH_SHIFT);
 				}
 				//stream << Mat(h, w, Cast(tensor.depth), slice);
 			}

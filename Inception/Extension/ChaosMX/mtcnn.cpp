@@ -34,7 +34,11 @@ namespace chaos
 
 			std::vector<FaceInfo> Detect(const Mat& image) final
 			{
-				CHECK(image.rows > 12 && image.cols > 12);
+				//CHECK(image.rows > 12 && image.cols > 12);
+				if (image.rows < 12 || image.cols < 12)
+				{
+					return std::vector<FaceInfo>();
+				}
 
 				// Pre-process
 				data = image.t();
@@ -63,6 +67,33 @@ namespace chaos
 				}
 
 				return faces_info;
+			}
+
+			void Detect(const Mat& image, FaceInfo& info) final
+			{
+				//CHECK(image.rows > 12 && image.cols > 12);
+				if (image.rows < 12 || image.cols < 12)
+				{
+					return;
+				}
+
+				data = image.t();
+				data.convertTo(data, CV_32F, 1 / 128., -1.);
+
+				std::vector<ObjectRect>().swap(objects);
+				// Transpose the rect
+				objects.push_back({ Rect(info.rect.y, info.rect.x, info.rect.height, info.rect.width), info.score });
+
+				nets.Forward("ONet");
+
+				if (!objects.empty())
+				{
+					info = objects[0];
+					if (do_landmark)
+					{
+						info.points = landmarks[0];
+					}
+				}
 			}
 
 		private:

@@ -12,6 +12,7 @@ namespace chaos
 		{
 		public:
 			FaceInfo();
+			FaceInfo(const Rect& rect, float score = 1.0f);
 			FaceInfo(const ObjectRect& obj);
 
 			float score;

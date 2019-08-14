@@ -367,16 +367,15 @@ namespace chaos
 				while (!(data = loader->Next()).Empty())
 				{
 					int64 tick = cv::getTickCount();
-					Mat feat = forward(data.sample.GetData()[0]);
+					dnn::Tensor feat = forward(data.sample.GetData()[0]);
 					during += (cv::getTickCount() - tick);
 
-					if (!feat.empty())
+					if (feat.data)
 					{
-						CHECK_EQ(CV_32F, feat.depth());
-						CHECK_EQ(2, feat.dims);
-						int len = feat.size[0] * feat.size[1];
+						CHECK(feat.IsContinue());
+						CHECK_EQ(F32, feat.depth);
 
-						status = database->Put(rocksdb::WriteOptions(), handles[idx], data.key, std::string((char*)feat.data, len * sizeof(float)));
+						status = database->Put(rocksdb::WriteOptions(), handles[idx], data.key, std::string((char*)feat.data, feat.Size() * sizeof(float)));
 						CHECK(status.ok()) << status.ToString();
 						valid_size[idx]++;
 					}
@@ -409,7 +408,7 @@ namespace chaos
 						scores[id] = measure(f1, f2);
 					}
 					return scores;
-				}; // Slow ?
+				}; // Slow ?   ---->  Yes, slow!!
 
 				ProgressBar::Render("Identifying", valid_size[GENUINE]);
 				for (iters[GENUINE]->SeekToFirst(); iters[GENUINE]->Valid(); iters[GENUINE]->Next())

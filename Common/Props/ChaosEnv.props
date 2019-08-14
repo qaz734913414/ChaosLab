@@ -5,13 +5,13 @@
     <Toolkits>$(SolutionDir)Common\Toolkits\</Toolkits>
   </PropertyGroup>
   <PropertyGroup>
-    <IncludePath Condition="'$(PlatformTarget)'=='x64'">$(Toolkits)OpenCV\4.1\include;$(Toolkits)Facebook\rocksdb\6.0.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(PlatformTarget)'=='x64'">$(Toolkits)OpenCV\4.1\x64\vc16\lib;$(Toolkits)Facebook\rocksdb\6.0.1\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(PlatformTarget)'=='x64'">$(Toolkits)OpenCV\4.1\include;$(Toolkits)OpenBlas\0.3.5\include;$(Toolkits)Facebook\faiss\1.5.3\include;$(Toolkits)Facebook\rocksdb\6.0.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(PlatformTarget)'=='x64'">$(Toolkits)OpenCV\4.1\x64\vc16\lib;$(Toolkits)OpenBlas\0.3.5\lib;$(Toolkits)Facebook\faiss\1.5.3\lib;$(Toolkits)Facebook\rocksdb\6.0.1\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(PlatformTarget)'=='Debug|x64'">opencv_world410d.lib;rocksdb_debug.lib;Rpcrt4.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalDependencies Condition="'$(Configuration)|$(PlatformTarget)'=='Release|x64'">opencv_world410.lib;rocksdb.lib;Rpcrt4.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(PlatformTarget)'=='Debug|x64'">opencv_world410d.lib;openblas.lib;faissd.lib;rocksdb_debug.lib;Rpcrt4.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(PlatformTarget)'=='Release|x64'">opencv_world410.lib;openblas.lib;faiss.lib;rocksdb.lib;Rpcrt4.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>

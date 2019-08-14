@@ -2,6 +2,7 @@
 
 #include "core/core.hpp"
 #include "core/allocator.hpp"
+#include "dnn/tensor.hpp"
 
 namespace chaos
 {
@@ -122,16 +123,16 @@ namespace chaos
 		public:
 			enum Type
 			{
-				FILE, /// Image file
-				DATA, /// Mat data
+				FILE, /// Image File
+				DATA, /// Image Data
 			};
 
 			Sample();
 			Sample(const FileList& group);
 			Sample(const std::vector<Mat>& group);
+			Sample(const std::vector<dnn::Tensor>& group);
 
 			Sample(const std::string& buff);
-			//operator std::string() const;
 
 			std::string ToString() const;
 

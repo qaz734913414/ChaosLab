@@ -10,7 +10,8 @@ namespace chaos
 	public:
 		Numpy(const File& file);
 
-		void CreateHead(const dnn::Shape& shape, const dnn::Depth& depth);
+		void CreateHead(const Shape& shape, const Depth& depth);
+
 		void Add(const dnn::Tensor& tensor);
 
 		static dnn::Tensor Load(const File& file);

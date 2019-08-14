@@ -25,6 +25,66 @@ namespace chaos
 	// cv::Range do not support float
 	using Range = cv::Vec2f; // <min, max>
 
+	class CHAOS_API Shape
+	{
+	public:
+		Shape();
+
+		template<class Type>
+		Shape(const std::vector<Type>& data)
+		{
+			for (auto val : data)
+			{
+				shape.push_back((int)val);
+			}
+		}
+
+		template<class Type>
+		Shape(const std::initializer_list<Type>& list)
+		{
+			for (auto val : list)
+			{
+				shape.push_back((int)val);
+			}
+		}
+
+		template<class Type>
+		operator std::vector<Type>() const
+		{
+			std::vector<Type> ret;
+			for (auto val : shape)
+			{
+				ret.push_back((Type)val);
+			}
+			return ret;
+		}
+
+		void Swap(Shape& shape);
+		size_t Size() const;
+		const int& operator[](size_t idx) const;
+		int& operator[](size_t idx);
+
+		CHAOS_API friend inline bool operator==(const Shape& s1, const Shape& s2)
+		{
+			return s1.shape == s2.shape;
+		}
+		CHAOS_API friend inline std::ostream& operator<<(std::ostream& stream, const Shape& shape);
+
+		std::string ToString() const;
+
+
+		const int* data() const;
+		std::vector<int>::const_iterator begin() const;
+		std::vector<int>::iterator begin();
+		std::vector<int>::const_iterator end() const;
+		std::vector<int>::iterator end();
+		int& back();
+		const int& back() const;
+
+	private:
+		std::vector<int> shape;
+	};
+
 	/// <summary>Base class for those which need indefinite parameters</summary>
 	class CHAOS_API IndefiniteParameter
 	{

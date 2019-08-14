@@ -141,6 +141,9 @@
     <ClInclude Include="include\utils\undigraph.hpp">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
+    <ClInclude Include="include\utils\fast_search.hpp">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\core.cpp">
@@ -210,6 +213,12 @@
       <Filter>Source Files\test</Filter>
     </ClCompile>
     <ClCompile Include="src\utils\undigraph.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test\verification.cpp">
+      <Filter>Source Files\test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\fast_search.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>

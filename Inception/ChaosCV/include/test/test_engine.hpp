@@ -19,10 +19,10 @@ namespace chaos
 			virtual void Save() = 0;
 			virtual void Close() = 0;
 
-			void SetForward(const std::function<Mat(const Mat&)>& func) { forward = func; }
+			void SetForward(const std::function<dnn::Tensor(const Mat&)>& func) { forward = func; }
 			__declspec(property(put = SetForward)) std::function<Mat(const Mat&)> Forward;
 		protected:
-			std::function<Mat(const Mat&)> forward;
+			std::function<dnn::Tensor(const Mat&)> forward;
 
 			std::string folder;
 		};
@@ -85,6 +85,29 @@ namespace chaos
 			ConfusionMat confusion;
 			ConfusionTable global_confusion; // Micro average confusion table
 			std::vector<ConfusionTable> local_confusions;
+		};
+
+		/// <summary>Verification Test</summary>
+		class CHAOS_API VTest : public TestEngine
+		{
+		public:
+			virtual ~VTest() {}
+			void SetPairList(const Ptr<DataLoader>& loader);
+			__declspec(property(put = SetPairList)) Ptr<DataLoader> PairList;
+
+			ConfusionTable GetConfusion() const;
+			__declspec(property(get = GetConfusion)) ConfusionTable Confusion;
+
+			static Ptr<VTest> Create(const std::string& db);
+			static Ptr<VTest> Load(const std::string& db);
+		protected:
+			Ptr<DataLoader> pair_list;
+			// Default measure method is COS distance
+			std::function<double(const Mat&, const Mat&)> measure = [](const Mat& f1, const Mat& f2) {
+				auto dis = f1.dot(f2) / sqrt(f1.dot(f1)) / sqrt(f2.dot(f2));
+				return (dis + 1.) / 2.;
+			};
+			ConfusionTable confusion;
 		};
 	}
 }

@@ -5,37 +5,39 @@
 
 namespace chaos
 {
-	std::string Cast(const dnn::Depth& depth)
+	std::string Cast(const Depth& depth)
 	{
 		switch (depth)
 		{
-		case dnn::F32:
+		case S64:
+			return "<i8";
+		case F32:
 			return "<f4";
-		case dnn::U8:
+		case U8:
 			return "<i4";
 		default:
 			LOG(FATAL) << "Now just support F32 and U8";
-			return "";
+			return ""; // Never reachable
 		}
 	}
 
-	dnn::Depth Cast(const std::string& descr)
+	Depth Cast(const std::string& descr)
 	{
 		switch (Hash(descr.c_str()))
 		{
 		case "'<f4'"_hash:
-			return dnn::F32;
+			return F32;
 		case "'<i4'"_hash:
-			return dnn::U8;
+			return U8;
 		default:
 			LOG(FATAL) << "Now do not support " << descr;
-			return dnn::UNK;
+			return U8; // Never reachable
 		}
 	}
 
 	Numpy::Numpy(const File& file) : file(file) { CHECK_EQ("npy", file.Type); }
 
-	void Numpy::CreateHead(const dnn::Shape& shape, const dnn::Depth& depth)
+	void Numpy::CreateHead(const Shape& shape, const Depth& depth)
 	{
 		std::string head = cv::format("%cNUMPY%c%cv%c{'descr': '%s', 'fortran_order': False, 'shape': %s, }", 0x93, 0x01, 0x00, 0x00, Cast(depth).c_str(), shape.ToString().c_str());
 		int remain = 127 - (int)head.size();
@@ -55,7 +57,7 @@ namespace chaos
 		CHECK_EQ(false, tensor.aligned);
 
 		std::ofstream fs(file, std::ios::binary | std::ios::app);
-		fs.write((char*)tensor.data, tensor.Total() * tensor.depth);
+		fs.write((char*)tensor.data, tensor.Size() * (tensor.depth >> DEPTH_SHIFT));
 		fs.close();
 	}
 
@@ -74,10 +76,10 @@ namespace chaos
 		{
 			size.push_back(std::atoi(shape[i].c_str()));
 		}
-		dnn::Depth depth = Cast(info.Data["descr"]);
+		Depth depth = Cast(info.Data["descr"]);
 
 		dnn::Tensor tensor = dnn::Tensor(size, depth);
-		fs.read((char*)tensor.data, depth * tensor.Size());
+		fs.read((char*)tensor.data, (depth >> DEPTH_SHIFT) * tensor.Size());
 
 		fs.close();
 		return tensor;
