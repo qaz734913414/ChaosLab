@@ -4,6 +4,7 @@
 
 namespace chaos
 {
+	Undigraph::Undigraph() : num(0) {}
 	Undigraph::Undigraph(int num) : num(num)
 	{
 		int shape[2] = {num, num};

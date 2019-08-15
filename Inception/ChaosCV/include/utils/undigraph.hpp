@@ -14,6 +14,7 @@ namespace chaos
 			MAX,
 		};
 
+		Undigraph();
 		Undigraph(int num);
 		void Connect(int i, int j, float weight = 1.f, const ConnectType & type = NONE);
 

@@ -2,3 +2,4 @@ logs*
 
 *.json
 *.params
+*.npy

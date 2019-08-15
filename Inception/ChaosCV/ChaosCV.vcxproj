@@ -176,6 +176,7 @@
     <ClInclude Include="include\dnn\reg.hpp" />
     <ClInclude Include="include\dnn\tensor.hpp" />
     <ClInclude Include="include\face\aligner.hpp" />
+    <ClInclude Include="include\face\clusterer.hpp" />
     <ClInclude Include="include\face\detector.hpp" />
     <ClInclude Include="include\face\face_info.hpp" />
     <ClInclude Include="include\highgui\highgui.hpp" />

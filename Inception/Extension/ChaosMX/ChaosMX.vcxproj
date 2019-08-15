@@ -162,6 +162,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="gcn.cpp" />
     <ClCompile Include="mtcnn.cpp" />
     <ClCompile Include="predictor.cpp" />
     <ClCompile Include="operator.cpp" />

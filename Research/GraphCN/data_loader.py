@@ -3,8 +3,11 @@ import mxnet as mx
 from mxnet import gluon
 from mxnet.gluon.data import dataset
 from mxnet.gluon.data.vision.transforms import ToTensor, Compose, Resize, Normalize, Cast
+from mxnet.gluon.data import DataLoader
 
 import numpy as np
+
+
 
 class TrainDatasetFromNP(dataset.Dataset):
     def __init__(self, feat_path, knn_graph_path, label_path, 
@@ -71,6 +74,7 @@ class TrainDatasetFromNP(dataset.Dataset):
                     A[unique_nodes_map[n], unique_nodes_map[node]] = 1
 
         D = A.sum(axis=1)
+        print(D)
         A = mx.nd.broadcast_div(A, D)
         A_ = mx.nd.zeros((max_num_nodes,max_num_nodes))
         A_[:num_nodes,:num_nodes] = A
@@ -96,3 +100,24 @@ class TrainDatasetFromNP(dataset.Dataset):
         unique_nodes_list = mx.nd.concat(unique_nodes_list, mx.nd.zeros((max_num_nodes-num_nodes)), dim=0)
 
         return feat, A_, center_idx, one_hop_idcs, unique_nodes_list, edge_labels
+
+
+if __name__ == '__main__':
+    # To test data loader
+    k_at_hop=[200,5]
+    batch_size = 1
+    data = TrainDatasetFromNP(r'E:\vggface2_train\new\itest\feats.npy',
+                              r'E:\vggface2_train\new\itest\neighbors.npy',
+                              r'E:\vggface2_train\new\itest\labels.npy', k_at_hop)
+
+    data_loader = DataLoader(dataset=data, batch_size=batch_size, shuffle=False)
+    for feat, A, center_idx, one_hop_idcs, edge_labels in data_loader:
+        print(feat)
+        print(A)
+        #np.save('feat.npy', feat.asnumpy())
+        #np.save('A.npy', A.asnumpy())
+        #np.save('ohi.npy', one_hop_idcs.asnumpy())
+        #np.save('el.npy', edge_labels.asnumpy())
+        break
+
+    pass

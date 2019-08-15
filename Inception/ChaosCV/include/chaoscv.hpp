@@ -12,6 +12,7 @@
 #include "face/face_info.hpp"
 #include "face/detector.hpp"
 #include "face/aligner.hpp"
+#include "face/clusterer.hpp"
 
 #include "highgui/highgui.hpp"
 #include "highgui/plot.hpp"
